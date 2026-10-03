@@ -12,8 +12,6 @@ node_modules/
 coverage/
 
 # next.js
-web/.next/
-web/out/
 .next/
 out/
 
@@ -39,11 +37,10 @@ yarn-error.log*
 
 # vercel
 .vercel
-web/.vercel
 
 # typescript
 *.tsbuildinfo
-web/next-env.d.ts
+next-env.d.ts
 
 # OS / editor
 .idea/
