@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #171716;
+  --color-charcoal: #242321;
+  --color-bone: #f1ede4;
+  --color-warm-white: #f8f6f1;
+  --color-stone: #c8c0b2;
+  --color-stone-cool: #d6d2c8;
+  --color-tobacco: #76563d;
+  --color-oxide: #8b4932;
+  --color-brass: #a58a5a;
+  --color-forest: #344139;
+  --color-muted: #6b655c;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 160ms;
+  --duration-standard: 320ms;
+  --duration-editorial: 700ms;
+
+  --header-h: 72px;
+  --header-h-compact: 56px;
+
+  --background: var(--color-warm-white);
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-charcoal: var(--color-charcoal);
+  --color-bone: var(--color-bone);
+  --color-warm-white: var(--color-warm-white);
+  --color-stone: var(--color-stone);
+  --color-stone-cool: var(--color-stone-cool);
+  --color-tobacco: var(--color-tobacco);
+  --color-oxide: var(--color-oxide);
+  --color-brass: var(--color-brass);
+  --color-forest: var(--color-forest);
+  --color-muted: var(--color-muted);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-instrument);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(52, 65, 57, 0.06), transparent 45%),
+      radial-gradient(90% 60% at 100% 10%, rgba(118, 86, 61, 0.05), transparent 40%),
+      linear-gradient(180deg, var(--color-warm-white) 0%, var(--color-bone) 55%, var(--color-warm-white) 100%);
+    background-attachment: fixed;
+    color: var(--color-ink);
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-forest) 22%, transparent);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 3px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-instrument), Georgia, serif;
+  }
+
+  .container-editorial {
+    width: min(100% - 2rem, 1280px);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .container-editorial {
+      width: min(100% - 4rem, 1280px);
+    }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .reveal-up {
+    animation: reveal-up var(--duration-editorial) var(--ease-out) both;
+  }
+
+  .reveal-fade {
+    animation: reveal-fade var(--duration-editorial) var(--ease-out) both;
+  }
+
+  .grain {
+    background-image:
+      linear-gradient(
+        135deg,
+        rgba(23, 23, 22, 0.03) 0%,
+        transparent 40%,
+        rgba(52, 65, 57, 0.04) 100%
+      );
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-drawer-in {
+  animation: drawer-in var(--duration-standard) var(--ease-out) both;
+}
+
+.animate-overlay-in {
+  animation: overlay-in var(--duration-standard) var(--ease-out) both;
+}
