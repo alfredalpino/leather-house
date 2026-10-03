@@ -39,25 +39,25 @@ export function Header() {
             : "h-[72px] bg-warm-white/88 backdrop-blur-md border-b border-stone/40"
         }`}
       >
-        <div className="container-editorial grid h-full grid-cols-[1fr_auto_1fr] items-center gap-4">
-          <div className="flex items-center gap-2 justify-self-start">
+        <div className="container-editorial flex h-full items-center justify-between gap-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
+          <div className="flex min-w-0 items-center gap-1 justify-self-start sm:gap-2">
             <button
               type="button"
-              className="lg:hidden inline-flex h-11 w-11 items-center justify-center text-ink"
+              className="lg:hidden inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink"
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               onClick={toggleMobileNav}
             >
               {mobileNavOpen ? (
-                <X size={22} strokeWidth={1.75} />
+                <X size={22} strokeWidth={2} />
               ) : (
-                <Menu size={22} strokeWidth={1.75} />
+                <Menu size={22} strokeWidth={2} />
               )}
             </button>
 
             <Link
               href="/"
-              className="font-display text-[1.55rem] leading-none tracking-[-0.02em] text-ink md:text-[1.75rem]"
+              className="font-display truncate text-[1.45rem] leading-none tracking-[-0.02em] text-ink sm:text-[1.55rem] md:text-[1.75rem]"
               onClick={closeMobileNav}
             >
               Leather House
@@ -98,14 +98,14 @@ export function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-0.5 justify-self-end">
+          <div className="flex shrink-0 items-center gap-0.5 justify-self-end lg:col-start-3">
             <button
               type="button"
               className="inline-flex h-11 w-11 items-center justify-center text-ink"
               aria-label="Search"
               onClick={openSearch}
             >
-              <Search size={20} strokeWidth={1.75} />
+              <Search size={20} strokeWidth={2} />
             </button>
             <button
               type="button"
@@ -113,7 +113,7 @@ export function Header() {
               aria-label={`Bag, ${itemCount} items`}
               onClick={openCart}
             >
-              <ShoppingBag size={20} strokeWidth={1.75} />
+              <ShoppingBag size={20} strokeWidth={2} />
               {itemCount > 0 && (
                 <span className="absolute right-1.5 top-1.5 min-w-[16px] h-4 px-1 rounded-[2px] bg-ink text-warm-white text-[10px] font-medium leading-4 text-center">
                   {itemCount}
