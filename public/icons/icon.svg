@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#141312" rx="48"/>
+  <rect x="30" y="30" width="452" height="452" fill="none" stroke="#B49B6C" stroke-width="6" rx="36" opacity="0.9"/>
+  <polygon points="256,128 266,144 256,160 246,144" fill="#B49B6C"/>
+  <text x="256" y="315" font-family="Georgia, 'Times New Roman', serif" font-size="180" font-weight="500" fill="#F7F6F3" text-anchor="middle" letter-spacing="-4">LH</text>
+  <line x1="150" y1="388" x2="190" y2="388" stroke="#B49B6C" stroke-width="2"/>
+  <text x="256" y="394" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="400" fill="#B49B6C" text-anchor="middle" letter-spacing="6">LUCKNOW</text>
+  <line x1="322" y1="388" x2="362" y2="388" stroke="#B49B6C" stroke-width="2"/>
+</svg>

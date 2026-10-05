@@ -2,19 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Grid, Sparkles, Search, ShoppingBag } from "lucide-react";
+import { Home, Grid, Sparkles, Search, User } from "lucide-react";
 import { motion } from "motion/react";
-import { useCart } from "@/lib/cart-context";
 import { useUi } from "@/lib/ui-context";
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { itemCount, openCart } = useCart();
   const { openSearch } = useUi();
 
   const isHome = pathname === "/";
   const isShop = pathname.startsWith("/shop") && !pathname.includes("/fragrance");
   const isFragrance = pathname.includes("/fragrance");
+  const isAccount = pathname.startsWith("/account");
 
   return (
     <nav
@@ -101,31 +100,27 @@ export function MobileBottomNav() {
           </span>
         </button>
 
-        {/* Bag */}
-        <button
-          type="button"
-          onClick={openCart}
-          className="relative flex flex-col items-center justify-center w-full h-full py-1 text-center text-muted hover:text-ink transition-colors"
-          aria-label={`Bag, ${itemCount} items`}
+        {/* Profile */}
+        <Link
+          href="/account"
+          className={`relative flex flex-col items-center justify-center w-full h-full py-1 text-center transition-colors ${
+            isAccount ? "text-ink" : "text-muted hover:text-ink"
+          }`}
+          aria-current={isAccount ? "page" : undefined}
+          aria-label="Patron Profile"
         >
-          <div className="relative">
-            <ShoppingBag size={19} strokeWidth={1.6} />
-            {itemCount > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                key={itemCount}
-                transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] px-1 rounded-full bg-ink text-warm-white text-[10px] font-medium leading-[17px] text-center"
-              >
-                {itemCount}
-              </motion.span>
-            )}
-          </div>
+          <User size={19} strokeWidth={isAccount ? 2.2 : 1.6} />
           <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
-            Bag
+            Profile
           </span>
-        </button>
+          {isAccount && (
+            <motion.span
+              layoutId="bottom-nav-active"
+              className="absolute -top-1 w-6 h-0.5 bg-ink rounded-full"
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            />
+          )}
+        </Link>
       </div>
     </nav>
   );

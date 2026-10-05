@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { primaryNav } from "@/lib/data/nav";
 import { useCart } from "@/lib/cart-context";
 import { useUi } from "@/lib/ui-context";
@@ -95,15 +95,22 @@ export function Header() {
           <div className="ml-auto flex shrink-0 items-center">
             <button
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center text-ink"
+              className="inline-flex h-11 w-11 items-center justify-center text-ink hover:text-accent transition-colors"
               aria-label="Search"
               onClick={openSearch}
             >
               <Search size={18} strokeWidth={1.75} />
             </button>
+            <Link
+              href="/account"
+              className="hidden sm:inline-flex h-11 w-11 items-center justify-center text-ink hover:text-accent transition-colors"
+              aria-label="Patron Profile"
+            >
+              <User size={18} strokeWidth={1.75} />
+            </Link>
             <button
               type="button"
-              className="relative inline-flex h-11 w-11 items-center justify-center text-ink"
+              className="relative inline-flex h-11 w-11 items-center justify-center text-ink hover:text-accent transition-colors"
               aria-label={`Bag, ${itemCount} items`}
               onClick={openCart}
             >
@@ -221,15 +228,22 @@ export function Header() {
           </ul>
           <div className="mt-10 pt-6 border-t border-line space-y-3">
             <Link
+              href="/account"
+              className="block text-xs font-medium tracking-[0.12em] uppercase text-ink"
+              onClick={closeMobileNav}
+            >
+              Patron Profile & Orders
+            </Link>
+            <Link
               href="/store"
-              className="block text-xs font-medium tracking-[0.12em] uppercase"
+              className="block text-xs font-medium tracking-[0.12em] uppercase text-muted hover:text-ink transition-colors"
               onClick={closeMobileNav}
             >
               Visit store
             </Link>
             <Link
               href="/corporate"
-              className="block text-xs font-medium tracking-[0.12em] uppercase"
+              className="block text-xs font-medium tracking-[0.12em] uppercase text-muted hover:text-ink transition-colors"
               onClick={closeMobileNav}
             >
               Corporate & bulk
