@@ -42,7 +42,7 @@ export function CheckoutClient() {
       <div>
         <div className="container-editorial py-20 max-w-xl text-center">
           <p className="font-display text-3xl">Nothing to check out</p>
-          <p className="mt-3 text-muted">Add objects from the catalogue first.</p>
+          <p className="mt-3 text-muted">Add products from the catalogue first.</p>
           <Button href="/shop" className="mt-8">
             Explore the House
           </Button>

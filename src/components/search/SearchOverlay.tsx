@@ -108,7 +108,7 @@ export function SearchOverlay() {
 
               {query.trim() && results.length === 0 && (
                 <div className="py-8 text-center text-muted">
-                  <p className="text-base font-display text-ink">No objects found</p>
+                  <p className="text-base font-display text-ink">No products found</p>
                   <p className="text-sm mt-1">No products match &ldquo;{query}&rdquo;.</p>
                 </div>
               )}

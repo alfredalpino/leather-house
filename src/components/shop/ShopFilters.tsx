@@ -146,7 +146,9 @@ export function ShopFilters({ activeCategory, resultCount }: Props) {
         />
       </div>
 
-      <p className="text-xs text-muted">{resultCount} objects</p>
+      <p className="text-xs text-muted">
+        {resultCount} {resultCount === 1 ? "product" : "products"}
+      </p>
     </div>
   );
 }

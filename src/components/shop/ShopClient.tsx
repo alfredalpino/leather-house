@@ -69,7 +69,7 @@ function ShopInner({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [mobileFilters, setMobileFilters] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const sub = searchParams.get("sub");
   const color = searchParams.get("color");
   const sort = searchParams.get("sort");
@@ -192,7 +192,7 @@ function ShopInner({
     if (category === "footwear") return "Soft Footwear";
     if (category === "leather") return "Leather Atelier";
     if (category === "accessories") return "Formal Accessories";
-    return "All Objects";
+    return "All Products";
   }, [category, sub]);
 
   const description = useMemo(() => {
@@ -244,7 +244,7 @@ function ShopInner({
 
               <div className="relative z-10">
                 <span className="inline-block text-[10px] font-sans font-semibold tracking-[0.14em] uppercase text-warm-white/70">
-                  {dept.count} {dept.count === 1 ? "Object" : "Objects"}
+                  {dept.count} {dept.count === 1 ? "Product" : "Products"}
                 </span>
                 <div className="flex items-center justify-between mt-1">
                   <h2 className="font-display text-base sm:text-xl text-warm-white tracking-tight">
@@ -269,7 +269,7 @@ function ShopInner({
             href="/shop?all=true"
             className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.14em] uppercase text-ink border-b border-ink/40 hover:border-ink pb-1 transition-colors"
           >
-            <span>Browse Complete Uncategorized Catalogue ({products.length} objects)</span>
+            <span>Browse Complete Uncategorized Catalogue ({products.length} products)</span>
             <ArrowRight size={13} />
           </Link>
         </div>
@@ -306,17 +306,22 @@ function ShopInner({
     return mapping[category] ?? [];
   }, [category]);
 
-  // Lock body scroll when mobile filter drawer is open
+  // Lock body scroll and listen for Escape key when filter drawer is open
   useEffect(() => {
-    if (mobileFilters) {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFiltersOpen(false);
+    };
+    if (filtersOpen) {
       document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [mobileFilters]);
+  }, [filtersOpen]);
 
   // ACTIVE CATEGORY PRODUCT VIEW WITH REFINED TOOLBAR (FILTER & SORT IN SAME LINE)
   return (
@@ -379,49 +384,48 @@ function ShopInner({
           </div>
         )}
 
-        {/* TOOLBAR: Filter toggle button on the left, Sort selector on the right */}
-        <div className="flex items-center justify-between gap-3 border-y border-line/80 py-2.5 mt-3 mb-6">
-          {/* Left: Compact Filter Button + Count */}
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              className="md:hidden inline-flex h-8 items-center gap-1.5 border border-line bg-paper px-2.5 text-[11px] font-semibold tracking-[0.08em] uppercase text-ink hover:border-ink transition-colors cursor-pointer rounded-sm shrink-0"
-              onClick={() => setMobileFilters(true)}
-              aria-label="Filter products"
-            >
-              <SlidersHorizontal size={13} strokeWidth={1.75} />
-              <span>Filters</span>
-              {activeFilterCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[9px] font-semibold flex items-center justify-center">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
+        {/* PRODUCT CATALOGUE TOOLBAR: Information on left, cohesive actions on right */}
+        <div className="border-y border-line/80 py-2.5 sm:py-3 mt-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            {/* Left: Product Count (Contextual Information / Metadata) */}
+            <p className="text-xs font-sans tracking-wide text-muted font-normal">
+              {filtered.length} {filtered.length === 1 ? "product" : "products"}
+            </p>
 
-            <span className="text-[11px] sm:text-xs font-medium text-ink/75 shrink-0">
-              {filtered.length} {filtered.length === 1 ? "object" : "objects"}
-            </span>
-          </div>
-
-          {/* Right: Prominent Compact Sort Selector on the same line */}
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[11px] font-sans uppercase tracking-wider text-muted hidden sm:inline">
-              Sort
-            </span>
-            <div className="relative">
-              <select
-                value={sort ?? "featured"}
-                onChange={(e) => setParam("sort", e.target.value)}
-                className="h-8 appearance-none bg-paper border border-line pl-2.5 pr-7 text-[11px] font-semibold uppercase tracking-[0.06em] text-ink hover:border-ink focus:outline-none focus:border-ink cursor-pointer rounded-sm transition-colors"
-                aria-label="Sort products"
+            {/* Right: Actions Control Group (FILTERS + SORT) */}
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
+              {/* FILTERS Action Button */}
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(true)}
+                className="flex-1 sm:flex-none inline-flex h-9 items-center justify-center gap-2 border border-line bg-paper px-3 sm:px-3.5 text-[11px] font-sans font-semibold tracking-[0.1em] uppercase text-ink hover:border-ink hover:bg-bone/40 focus-visible:outline-2 focus-visible:outline-ink transition-colors cursor-pointer rounded-sm"
+                aria-label="Open catalogue filters"
               >
-                <option value="featured">Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="name">Name: A to Z</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-ink/70">
-                <ArrowUpDown size={11} strokeWidth={1.75} />
+                <SlidersHorizontal size={13} strokeWidth={1.5} className="text-ink/80" />
+                <span>FILTERS</span>
+                {activeFilterCount > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[9px] font-semibold flex items-center justify-center ml-0.5">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+
+              {/* SORT Action Control */}
+              <div className="relative flex-1 sm:flex-none">
+                <select
+                  value={sort ?? "featured"}
+                  onChange={(e) => setParam("sort", e.target.value)}
+                  className="w-full sm:w-auto h-9 appearance-none bg-paper border border-line pl-3 pr-8 text-[11px] font-sans font-semibold uppercase tracking-[0.06em] text-ink hover:border-ink hover:bg-bone/40 focus:outline-none focus:border-ink focus-visible:outline-2 focus-visible:outline-ink cursor-pointer rounded-sm transition-colors text-left"
+                  aria-label="Sort products"
+                >
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name">Name: A to Z</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-ink/70">
+                  <ArrowUpDown size={11} strokeWidth={1.75} />
+                </div>
               </div>
             </div>
           </div>
@@ -473,81 +477,101 @@ function ShopInner({
           </div>
         )}
 
-        {/* Content Layout */}
-        <div className="grid gap-8 md:grid-cols-12">
-          {/* Desktop Filter Sidebar */}
-          <aside className="hidden md:block md:col-span-4 lg:col-span-3">
-            <ShopFilters activeCategory={category} resultCount={filtered.length} />
-          </aside>
+        {/* Product Grid Area */}
+        <div className="w-full">
+          {filtered.length === 0 ? (
+            <div className="py-16 text-center bg-paper/40 border border-line/50 p-6 rounded-sm">
+              <p className="font-display text-2xl text-ink">No products match</p>
+              <p className="mt-2 text-sm text-muted">
+                Clear active filters to view all products in this department.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setParam("sub", "");
+                  setParam("color", "");
+                }}
+                className="mt-5 inline-flex items-center justify-center h-10 px-5 text-xs font-semibold tracking-[0.12em] uppercase bg-ink text-warm-white hover:bg-ink/90 transition-colors cursor-pointer"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3.5 gap-y-8 sm:gap-x-5 sm:gap-y-12">
+              {filtered.map((product, index) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  priority={index < 4}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
-          {/* Product Grid */}
-          <div className="col-span-12 md:col-span-8 lg:col-span-9">
-            {filtered.length === 0 ? (
-              <div className="py-16 text-center bg-paper/40 border border-line/50 p-6 rounded-sm">
-                <p className="font-display text-2xl text-ink">No objects match</p>
-                <p className="mt-2 text-sm text-muted">
-                  Clear active filters to view all products in this department.
-                </p>
+      {/* Slide-over Filter Panel */}
+      {filtersOpen && (
+        <div
+          className="fixed inset-0 z-50 flex justify-end"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Catalogue filters"
+        >
+          {/* Backdrop Scrim */}
+          <button
+            type="button"
+            className="fixed inset-0 bg-ink/50 backdrop-blur-xs transition-opacity cursor-pointer w-full h-full border-0"
+            aria-label="Close filters backdrop"
+            onClick={() => setFiltersOpen(false)}
+          />
+
+          {/* Drawer Panel */}
+          <div className="relative w-full max-w-sm sm:max-w-md bg-warm-white h-full p-5 sm:p-6 overflow-y-auto shadow-2xl flex flex-col justify-between z-10 animate-drawer-in">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-line mb-6">
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-sans font-semibold tracking-[0.16em] uppercase text-ink">
+                    FILTERS
+                  </p>
+                  {activeFilterCount > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[9px] font-semibold flex items-center justify-center">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="h-9 w-9 inline-flex items-center justify-center text-ink hover:text-tobacco transition-colors cursor-pointer rounded-sm"
+                  aria-label="Close filters"
+                  onClick={() => setFiltersOpen(false)}
+                >
+                  <X size={18} strokeWidth={1.5} />
+                </button>
+              </div>
+
+              <ShopFilters activeCategory={category} resultCount={filtered.length} />
+            </div>
+
+            <div className="pt-6 border-t border-line mt-8 flex items-center gap-3">
+              {(color || sub) && (
                 <button
                   type="button"
                   onClick={() => {
                     setParam("sub", "");
                     setParam("color", "");
                   }}
-                  className="mt-5 inline-flex items-center justify-center h-10 px-5 text-xs font-semibold tracking-[0.12em] uppercase bg-ink text-warm-white hover:bg-ink/90 transition-colors"
+                  className="h-11 px-4 border border-line text-xs font-semibold tracking-[0.12em] uppercase text-ink hover:border-ink transition-colors cursor-pointer"
                 >
-                  Clear Filters
+                  Reset
                 </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-3.5 gap-y-8 sm:gap-x-5 sm:gap-y-10">
-                {filtered.map((product, index) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    priority={index < 4}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Filters Drawer */}
-      {mobileFilters && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 bg-ink/50 backdrop-blur-xs"
-            aria-label="Close filters"
-            onClick={() => setMobileFilters(false)}
-          />
-          <div className="absolute inset-y-0 left-0 w-[min(100%,320px)] max-w-full bg-warm-white p-5 sm:p-6 overflow-y-auto animate-drawer-in translate-x-0 shadow-2xl flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between pb-4 border-b border-line mb-6">
-                <p className="text-[12px] font-sans font-semibold tracking-[0.16em] uppercase text-ink">
-                  Filter Department
-                </p>
-                <button
-                  type="button"
-                  className="h-9 w-9 inline-flex items-center justify-center text-ink hover:text-tobacco transition-colors"
-                  aria-label="Close filters"
-                  onClick={() => setMobileFilters(false)}
-                >
-                  <X size={18} strokeWidth={1.75} />
-                </button>
-              </div>
-              <ShopFilters activeCategory={category} resultCount={filtered.length} />
-            </div>
-
-            <div className="pt-6 border-t border-line mt-8">
+              )}
               <button
                 type="button"
-                className="w-full h-11 bg-ink text-warm-white text-xs font-semibold tracking-[0.12em] uppercase hover:bg-ink/90 transition-colors"
-                onClick={() => setMobileFilters(false)}
+                className="flex-1 h-11 bg-ink text-warm-white text-xs font-semibold tracking-[0.12em] uppercase hover:bg-ink/90 transition-colors cursor-pointer"
+                onClick={() => setFiltersOpen(false)}
               >
-                Show {filtered.length} Objects
+                Show {filtered.length} {filtered.length === 1 ? "Product" : "Products"}
               </button>
             </div>
           </div>
