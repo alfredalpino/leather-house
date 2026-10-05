@@ -690,6 +690,60 @@ export const products: Product[] = [
     ],
     featured: true,
   },
+  {
+    id: "25",
+    slug: "aminabad-saddle-purse",
+    name: "Aminabad Saddle Purse",
+    category: "leather",
+    subcategory: "bags",
+    price: 4890,
+    material: "Vegetable-tanned saddle leather",
+    color: "Warm Chestnut",
+    availability: "in-stock",
+    description:
+      "A structured women's shoulder purse with a curved saddle silhouette, solid brass turn-lock, and soft suede lining. Designed for daily elegance and lasting patina.",
+    details: [
+      "Curved saddle flap silhouette",
+      "Solid brushed brass turn-lock hardware",
+      "Adjustable leather cross-body strap",
+      "Interior slip compartment and suede lining",
+    ],
+    construction: "Hand-stitched vegetable-tanned panels with burnished beeswax edges.",
+    dimensions: "22 × 18 × 7 cm. Strap drop 48–56 cm.",
+    care: "Wipe with dry cotton cloth. Apply leather cream seasonally to maintain suppleness.",
+    images: [
+      "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1200&q=80",
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1200&q=80",
+    ],
+    featured: true,
+  },
+  {
+    id: "26",
+    slug: "evening-leather-clutch",
+    name: "Evening Leather Clutch",
+    category: "leather",
+    subcategory: "bags",
+    price: 3290,
+    material: "Smooth calfskin leather",
+    color: "Ink Black",
+    availability: "in-stock",
+    description:
+      "A slim envelope clutch crafted in smooth full-grain calfskin for evening affairs. Features magnetic flap closure and internal card slots.",
+    details: [
+      "Slim envelope silhouette",
+      "Concealed magnetic snap closure",
+      "Internal card sleeves and note pocket",
+      "Edge-burnished and lined",
+    ],
+    construction: "Single-piece shell with folded gusset and fine-gauge stitching.",
+    dimensions: "24 × 14 × 3 cm.",
+    care: "Store in cloth dust bag. Avoid prolonged water exposure.",
+    images: [
+      "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=1200&q=80",
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1200&q=80",
+    ],
+    featured: true,
+  },
 ];
 
 export function formatPrice(price: number) {

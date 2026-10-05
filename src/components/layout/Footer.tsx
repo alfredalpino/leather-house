@@ -138,10 +138,6 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span>All prices in INR (₹)</span>
             <span>·</span>
-            <Link href="/offline" className="hover:text-warm-white transition-colors">
-              Offline App Status
-            </Link>
-            <span>·</span>
             <span>Handcrafted in India</span>
           </div>
         </div>

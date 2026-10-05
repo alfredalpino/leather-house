@@ -1,8 +1,16 @@
 "use client";
 
 import { Suspense, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import {
+  SlidersHorizontal,
+  ArrowUpDown,
+  X,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import {
@@ -11,6 +19,14 @@ import {
   type ProductCategory,
   type ProductSubcategory,
 } from "@/lib/data/products";
+
+interface DepartmentCard {
+  title: string;
+  subtitle: string;
+  href: string;
+  image: string;
+  count: number;
+}
 
 function filterProducts(
   products: Product[],
@@ -49,67 +65,339 @@ function ShopInner({
   products: Product[];
   category?: ProductCategory;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+
   const [mobileFilters, setMobileFilters] = useState(false);
   const sub = searchParams.get("sub");
   const color = searchParams.get("color");
   const sort = searchParams.get("sort");
+  const showAll = searchParams.get("all") === "true";
+
+  // Check if we should display the Category Department Hub or the Product View
+  const isDepartmentHub = !category && !sub && !color && !showAll;
+
+  // Department definitions with real-time product counts
+  const departments: DepartmentCard[] = useMemo(() => [
+    {
+      title: "Belts",
+      subtitle: "Full-Grain Leather & Brass Buckles",
+      href: "/shop/leather?sub=belts",
+      image: "https://images.unsplash.com/photo-1664286074176-5206ee5dc878?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "belts").length,
+    },
+    {
+      title: "Soft Footwear",
+      subtitle: "Oxfords, Double Monks & Casuals",
+      href: "/shop/footwear",
+      image: "https://images.unsplash.com/photo-1668069226492-508742b03147?w=900&q=80",
+      count: products.filter((p) => p.category === "footwear").length,
+    },
+    {
+      title: "Boots",
+      subtitle: "Cap-Toe & Handcrafted Ankle Boots",
+      href: "/shop/footwear?sub=boots",
+      image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "boots").length,
+    },
+    {
+      title: "Leather Bags",
+      subtitle: "Office Briefcases, Daypacks & Backpacks",
+      href: "/shop/leather?sub=bags",
+      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "bags").length,
+    },
+    {
+      title: "Ladies' Purses",
+      subtitle: "Saddle Flap Purses & Evening Clutches",
+      href: "/shop/leather?sub=bags",
+      image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=900&q=80",
+      count: 2,
+    },
+    {
+      title: "Wallets & Cardholders",
+      subtitle: "Vegetable-Tanned Bifolds & Card Sleeves",
+      href: "/shop/leather?sub=wallets",
+      image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "wallets").length,
+    },
+    {
+      title: "Leather Jackets",
+      subtitle: "House Biker & Structured Outerwear",
+      href: "/shop/leather?sub=jackets",
+      image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "jackets").length,
+    },
+    {
+      title: "Pure Attar & Itr",
+      subtitle: "Shamama-tul-Amber, Ruh Gulab & Mitti Attar",
+      href: "/shop/fragrance?sub=attar",
+      image: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "attar").length,
+    },
+    {
+      title: "Royal Oud",
+      subtitle: "Wild Assam Agarwood & Safed White Oud",
+      href: "/shop/fragrance?sub=oud",
+      image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=900&q=80",
+      count: products.filter((p) => p.subcategory === "oud").length,
+    },
+    {
+      title: "Royal Fragrance",
+      subtitle: "Eau de Parfum, Fine Sprays & Woods",
+      href: "/shop/fragrance",
+      image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=900&q=80",
+      count: products.filter((p) => p.category === "fragrance").length,
+    },
+    {
+      title: "Formal Accessories",
+      subtitle: "Silk Ties, Brass Cufflinks & Tie Bars",
+      href: "/shop/accessories",
+      image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&q=80",
+      count: products.filter((p) => p.category === "accessories").length,
+    },
+  ], [products]);
 
   const filtered = useMemo(
     () => filterProducts(products, category, sub, color, sort),
     [products, category, sub, color, sort],
   );
 
-  const title = category ? categoryLabels[category] : "Shop";
+  const setParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (!value || value === "all" || (key === "sort" && value === "featured")) {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
 
-  return (
-    <div>
+  const activeFilterCount = (sub ? 1 : 0) + (color ? 1 : 0) + (sort && sort !== "featured" ? 1 : 0);
+
+  // Dynamic Title & Description
+  const title = useMemo(() => {
+    if (sub === "belts") return "Belts";
+    if (sub === "boots") return "Boots";
+    if (sub === "jackets") return "Leather Jackets";
+    if (sub === "wallets") return "Wallets & Cardholders";
+    if (sub === "bags") return "Leather Bags & Purses";
+    if (sub === "attar") return "Pure Attar & Itr";
+    if (sub === "oud") return "Royal Oud & Dehn Al-Oud";
+    if (sub === "perfumes") return "Artisanal Perfumes";
+    if (sub === "formal") return "Formal Footwear";
+    if (category === "fragrance") return "Royal Fragrance & Itr";
+    if (category === "footwear") return "Soft Footwear";
+    if (category === "leather") return "Leather Atelier";
+    if (category === "accessories") return "Formal Accessories";
+    return "All Objects";
+  }, [category, sub]);
+
+  const description = useMemo(() => {
+    if (category === "fragrance" || sub === "attar" || sub === "oud") {
+      return "Authentic Awadhi & Persian attars, aged wild Assam agarwood ouds, and copper-deg distillations.";
+    }
+    if (category === "footwear" || sub === "boots") {
+      return "Handcrafted calfskin footwear, Goodyear-feel oxfords and soft unlined loafers.";
+    }
+    if (category === "leather" || sub === "belts" || sub === "jackets" || sub === "bags") {
+      return "Full-grain hides, vegetable-tanned straps, and heirloom pieces built to soften with wear.";
+    }
+    return "Handcrafted leather goods, footwear, formal accessories, and royal fragrances from Lucknow.";
+  }, [category, sub]);
+
+  // If at root /shop without category or subcategory selection: RENDER DEPARTMENT CATEGORIES HUB
+  if (isDepartmentHub) {
+    return (
       <div className="container-catalogue py-8 md:py-12">
-        <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
-          The Shop
-        </p>
-        <h1 className="mt-2 font-display text-[clamp(1.85rem,4vw,2.75rem)]">
-          {category === "fragrance" ? "Royal Fragrance & Itr" : title}
-        </h1>
-        <p className="mt-3 max-w-xl text-sm md:text-base text-muted">
-          {category === "fragrance"
-            ? "Authentic Awadhi & Persian attars, aged Assam agarwood ouds, and signature distillations matured in traditional copper degs."
-            : category
-            ? `${categoryLabels[category]} selected for material quality and lasting wear.`
-            : "Leather, footwear, accessories and royal fragrances from the house."}
-        </p>
-
-        <div className="mt-8 lg:hidden">
-          <button
-            type="button"
-            className="inline-flex h-11 items-center gap-2 border border-ink px-4 text-sm tracking-[0.1em] uppercase"
-            onClick={() => setMobileFilters(true)}
-          >
-            <SlidersHorizontal size={16} strokeWidth={1.5} />
-            Filters
-          </button>
+        <div className="border-b border-line pb-6">
+          <p className="text-[11px] font-sans font-medium tracking-[0.2em] uppercase text-muted">
+            Departments
+          </p>
+          <h1 className="mt-2 font-display text-[clamp(2rem,4.5vw,3rem)] leading-tight text-ink">
+            Shop by Category
+          </h1>
+          <p className="mt-2.5 max-w-xl text-sm md:text-base text-muted leading-relaxed">
+            Select a collection below to browse full-grain leather goods, soft footwear, formal accessories, and royal Awadhi attars.
+          </p>
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-12">
+        {/* Categories / Departments Grid */}
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 md:gap-5">
+          {departments.map((dept) => (
+            <Link
+              key={dept.title}
+              href={dept.href}
+              className="group relative aspect-[3/4] overflow-hidden bg-bone shadow-[0_1px_8px_rgba(20,19,18,0.04)] border border-line/40 flex flex-col justify-end p-4 sm:p-5"
+            >
+              <Image
+                src={dept.image}
+                alt={dept.title}
+                fill
+                className="object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              {/* Dual gradient scrim for pristine text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent transition-opacity duration-300 group-hover:from-ink/95" />
+
+              <div className="relative z-10">
+                <span className="inline-block text-[10px] font-sans font-semibold tracking-[0.14em] uppercase text-warm-white/70">
+                  {dept.count} {dept.count === 1 ? "Object" : "Objects"}
+                </span>
+                <div className="flex items-center justify-between mt-1">
+                  <h2 className="font-display text-base sm:text-xl text-warm-white tracking-tight">
+                    {dept.title}
+                  </h2>
+                  <ArrowRight
+                    size={15}
+                    className="text-warm-white/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-warm-white shrink-0 ml-1"
+                  />
+                </div>
+                <p className="text-[11px] text-warm-white/75 line-clamp-1 mt-1 font-light hidden sm:block">
+                  {dept.subtitle}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* View all fallback */}
+        <div className="mt-12 text-center border-t border-line/60 pt-8">
+          <Link
+            href="/shop?all=true"
+            className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.14em] uppercase text-ink border-b border-ink/40 hover:border-ink pb-1 transition-colors"
+          >
+            <span>Browse Complete Uncategorized Catalogue ({products.length} objects)</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // ACTIVE CATEGORY PRODUCT VIEW WITH REFINED TOOLBAR (FILTER & SORT IN SAME LINE)
+  return (
+    <div>
+      <div className="container-catalogue py-6 md:py-10">
+        {/* Breadcrumb / Back to All Departments */}
+        <div className="pb-3">
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-1.5 text-xs font-medium tracking-[0.1em] uppercase text-muted hover:text-ink transition-colors"
+          >
+            <ArrowLeft size={13} />
+            <span>All Categories</span>
+          </Link>
+        </div>
+
+        {/* Category Header */}
+        <div className="pt-2">
+          <h1 className="font-display text-[clamp(1.85rem,4vw,2.75rem)] leading-tight text-ink">
+            {title}
+          </h1>
+          <p className="mt-2 max-w-xl text-sm md:text-base text-muted leading-relaxed">
+            {description}
+          </p>
+        </div>
+
+        {/* TOOLBAR: Filter button on the left, Sort selector on the right in the EXACT SAME LINE */}
+        <div className="flex items-center justify-between gap-3 border-y border-line/80 py-3 mt-6 mb-8">
+          {/* Left: Compact Filter Button */}
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              className="lg:hidden inline-flex h-9 items-center gap-1.5 border border-line bg-paper px-3 text-xs font-medium tracking-[0.08em] uppercase text-ink hover:border-ink transition-colors cursor-pointer rounded-sm"
+              onClick={() => setMobileFilters(true)}
+              aria-label="Filter products"
+            >
+              <SlidersHorizontal size={14} strokeWidth={1.75} />
+              <span>Filters</span>
+              {activeFilterCount > 0 && (
+                <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[10px] font-semibold flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
+            <span className="text-xs font-medium text-ink/75">
+              {filtered.length} {filtered.length === 1 ? "object" : "objects"}
+            </span>
+
+            {/* Active subcategory tag */}
+            {sub && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-bone text-ink border border-line">
+                {sub}
+                <button
+                  type="button"
+                  onClick={() => setParam("sub", "")}
+                  className="hover:text-tobacco ml-0.5 cursor-pointer"
+                  aria-label={`Remove ${sub} filter`}
+                >
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+          </div>
+
+          {/* Right: Prominent Compact Sort Selector on the same line */}
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-sans uppercase tracking-wider text-muted hidden sm:inline">
+              Sort
+            </span>
+            <div className="relative">
+              <select
+                value={sort ?? "featured"}
+                onChange={(e) => setParam("sort", e.target.value)}
+                className="h-9 appearance-none bg-paper border border-line pl-3 pr-8 text-xs font-medium uppercase tracking-[0.06em] text-ink hover:border-ink focus:outline-none focus:border-ink cursor-pointer rounded-sm transition-colors"
+                aria-label="Sort products"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ink/70">
+                <ArrowUpDown size={12} strokeWidth={1.75} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Layout */}
+        <div className="grid gap-8 lg:grid-cols-12">
+          {/* Desktop Filter Sidebar */}
           <aside className="hidden lg:block lg:col-span-3">
             <ShopFilters activeCategory={category} resultCount={filtered.length} />
           </aside>
 
+          {/* Product Grid */}
           <div className="lg:col-span-9">
             {filtered.length === 0 ? (
-              <div className="py-20 text-center">
-                <p className="font-display text-2xl">No objects match</p>
+              <div className="py-20 text-center bg-paper/40 border border-line/50 p-8 rounded-sm">
+                <p className="font-display text-2xl text-ink">No objects match</p>
                 <p className="mt-2 text-sm text-muted">
-                  Clear filters or explore another category.
+                  Clear active filters to view all products in this department.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setParam("sub", "");
+                    setParam("color", "");
+                  }}
+                  className="mt-5 inline-flex items-center justify-center h-10 px-5 text-xs font-semibold tracking-[0.12em] uppercase bg-ink text-warm-white hover:bg-ink/90 transition-colors"
+                >
+                  Clear Filters
+                </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-8 md:gap-x-4 md:gap-y-10">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3.5 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                 {filtered.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    priority={index < 6}
+                    priority={index < 4}
                   />
                 ))}
               </div>
@@ -118,27 +406,42 @@ function ShopInner({
         </div>
       </div>
 
+      {/* Mobile Filters Drawer */}
       {mobileFilters && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-ink/45"
+            className="absolute inset-0 bg-ink/50 backdrop-blur-xs"
             aria-label="Close filters"
             onClick={() => setMobileFilters(false)}
           />
-          <div className="absolute inset-y-0 left-0 w-[min(100%,340px)] bg-warm-white p-6 overflow-y-auto animate-drawer-in [animation-name:none] translate-x-0">
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-[13px] tracking-[0.14em] uppercase">Filters</p>
+          <div className="absolute inset-y-0 left-0 w-[min(100%,320px)] bg-warm-white p-6 overflow-y-auto animate-drawer-in translate-x-0 shadow-2xl flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-line mb-6">
+                <p className="text-[12px] font-sans font-semibold tracking-[0.16em] uppercase text-ink">
+                  Filter Department
+                </p>
+                <button
+                  type="button"
+                  className="h-9 w-9 inline-flex items-center justify-center text-ink hover:text-tobacco transition-colors"
+                  aria-label="Close filters"
+                  onClick={() => setMobileFilters(false)}
+                >
+                  <X size={18} strokeWidth={1.75} />
+                </button>
+              </div>
+              <ShopFilters activeCategory={category} resultCount={filtered.length} />
+            </div>
+
+            <div className="pt-6 border-t border-line mt-8">
               <button
                 type="button"
-                className="h-11 w-11 inline-flex items-center justify-center"
-                aria-label="Close filters"
+                className="w-full h-11 bg-ink text-warm-white text-xs font-semibold tracking-[0.12em] uppercase hover:bg-ink/90 transition-colors"
                 onClick={() => setMobileFilters(false)}
               >
-                <X size={20} strokeWidth={1.5} />
+                Show {filtered.length} Objects
               </button>
             </div>
-            <ShopFilters activeCategory={category} resultCount={filtered.length} />
           </div>
         </div>
       )}
