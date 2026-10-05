@@ -33,10 +33,17 @@ export function Header() {
 
   useEffect(() => {
     document.body.style.overflow = mobileNavOpen ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMobileNav();
+    };
+    if (mobileNavOpen) {
+      window.addEventListener("keydown", onKey);
+    }
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
-  }, [mobileNavOpen]);
+  }, [mobileNavOpen, closeMobileNav]);
 
   const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>("Leather");
 

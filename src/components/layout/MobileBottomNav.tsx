@@ -50,10 +50,10 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 md:hidden mobile-bottom-nav bg-warm-white/94 backdrop-blur-md border-t border-line/80 shadow-[0_-6px_20px_rgba(20,19,18,0.06)] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] pt-1 px-3 select-none"
+      className="fixed bottom-0 inset-x-0 z-40 md:hidden mobile-bottom-nav bg-warm-white/96 backdrop-blur-md border-t border-line/70 shadow-[0_-4px_16px_rgba(20,19,18,0.04)] pb-[max(0.35rem,env(safe-area-inset-bottom,0px))] pt-0.5 px-2 select-none"
       aria-label="App Navigation"
     >
-      <div className="grid grid-cols-4 items-center justify-items-center h-14">
+      <div className="grid grid-cols-4 items-center justify-items-center h-13">
         {/* Home */}
         <Link
           href="/"
@@ -62,15 +62,15 @@ export function MobileBottomNav() {
           }`}
           aria-current={isHome ? "page" : undefined}
         >
-          <Home size={19} strokeWidth={isHome ? 2.2 : 1.6} />
-          <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
+          <Home size={18} strokeWidth={isHome ? 2.0 : 1.5} />
+          <span className="text-[9px] font-medium tracking-[0.08em] uppercase mt-0.5">
             Home
           </span>
           {isHome && (
             <motion.span
               layoutId="bottom-nav-active"
-              className="absolute -top-1 w-6 h-0.5 bg-ink rounded-full"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="absolute -top-0.5 w-5 h-[1.5px] bg-ink rounded-full"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
             />
           )}
         </Link>
@@ -84,15 +84,15 @@ export function MobileBottomNav() {
           aria-current={isShop ? "page" : undefined}
           aria-label="Shop Catalogue"
         >
-          <ShoppingBag size={19} strokeWidth={isShop ? 2.2 : 1.6} />
-          <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
+          <ShoppingBag size={18} strokeWidth={isShop ? 2.0 : 1.5} />
+          <span className="text-[9px] font-medium tracking-[0.08em] uppercase mt-0.5">
             Shop
           </span>
           {isShop && (
             <motion.span
               layoutId="bottom-nav-active"
-              className="absolute -top-1 w-6 h-0.5 bg-ink rounded-full"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="absolute -top-0.5 w-5 h-[1.5px] bg-ink rounded-full"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
             />
           )}
         </Link>
@@ -107,17 +107,17 @@ export function MobileBottomNav() {
           aria-label="Royal Fragrance & Itr Collection"
         >
           <div className="relative">
-            <PerfumeBottleIcon size={19} strokeWidth={isFragrance ? 2.2 : 1.6} />
-            <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-brass animate-pulse" />
+            <PerfumeBottleIcon size={18} strokeWidth={isFragrance ? 2.0 : 1.5} />
+            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-brass/80" />
           </div>
-          <span className="text-[10px] font-medium tracking-[0.05em] mt-1">
+          <span className="text-[9px] font-medium tracking-[0.08em] uppercase mt-0.5">
             Fragrance
           </span>
           {isFragrance && (
             <motion.span
               layoutId="bottom-nav-active"
-              className="absolute -top-1 w-6 h-0.5 bg-tobacco rounded-full"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="absolute -top-0.5 w-5 h-[1.5px] bg-tobacco rounded-full"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
             />
           )}
         </Link>
@@ -131,15 +131,15 @@ export function MobileBottomNav() {
           aria-current={isAccount ? "page" : undefined}
           aria-label="Patron Profile"
         >
-          <User size={19} strokeWidth={isAccount ? 2.2 : 1.6} />
-          <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
+          <User size={18} strokeWidth={isAccount ? 2.0 : 1.5} />
+          <span className="text-[9px] font-medium tracking-[0.08em] uppercase mt-0.5">
             Profile
           </span>
           {isAccount && (
             <motion.span
               layoutId="bottom-nav-active"
-              className="absolute -top-1 w-6 h-0.5 bg-ink rounded-full"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="absolute -top-0.5 w-5 h-[1.5px] bg-ink rounded-full"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
             />
           )}
         </Link>

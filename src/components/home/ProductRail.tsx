@@ -101,11 +101,11 @@ export function ProductRail({
           </div>
         </div>
 
-        {/* Product track: perfectly container-bounded, 4 items on desktop, 3 on tablet, 2 on mobile */}
+        {/* Product track: mobile peek glide, 3 on tablet, 4 on desktop */}
         <div className="mt-7">
           <div
             ref={scrollerRef}
-            className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none scroll-smooth"
+            className="flex gap-3.5 sm:gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none scroll-smooth overscroll-x-contain -mx-4 px-4 sm:mx-0 sm:px-0"
             tabIndex={0}
             role="region"
             aria-label={`${title} product carousel`}
@@ -113,7 +113,7 @@ export function ProductRail({
             {products.map((product, index) => (
               <div
                 key={product.id}
-                className="w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.67rem)] lg:w-[calc(25%-0.95rem)] shrink-0 snap-start"
+                className="w-[72vw] max-w-[270px] sm:w-[calc(33.333%-0.67rem)] lg:w-[calc(25%-0.95rem)] shrink-0 snap-start"
               >
                 <ProductCard product={product} priority={index < 4} />
               </div>

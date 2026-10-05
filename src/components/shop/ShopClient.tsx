@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -277,6 +277,47 @@ function ShopInner({
     );
   }
 
+  // Subcategories mapping for horizontal scrolling filter rail
+  const categorySubcategories = useMemo(() => {
+    if (!category) return [];
+    const mapping: Record<ProductCategory, Array<{ id: string; label: string }>> = {
+      leather: [
+        { id: "belts", label: "Belts" },
+        { id: "jackets", label: "Jackets" },
+        { id: "wallets", label: "Wallets" },
+        { id: "bags", label: "Bags & Purses" },
+      ],
+      footwear: [
+        { id: "formal", label: "Formal" },
+        { id: "casual", label: "Casual" },
+        { id: "boots", label: "Boots" },
+      ],
+      accessories: [
+        { id: "ties", label: "Silk Ties" },
+        { id: "cufflinks", label: "Cufflinks" },
+        { id: "tie-pins", label: "Tie Bars" },
+      ],
+      fragrance: [
+        { id: "attar", label: "Pure Attar & Itr" },
+        { id: "oud", label: "Royal Oud" },
+        { id: "perfumes", label: "Artisanal Perfumes" },
+      ],
+    };
+    return mapping[category] ?? [];
+  }, [category]);
+
+  // Lock body scroll when mobile filter drawer is open
+  useEffect(() => {
+    if (mobileFilters) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileFilters]);
+
   // ACTIVE CATEGORY PRODUCT VIEW WITH REFINED TOOLBAR (FILTER & SORT IN SAME LINE)
   return (
     <div>
@@ -288,61 +329,82 @@ function ShopInner({
             className="inline-flex items-center gap-1.5 text-xs font-medium tracking-[0.1em] uppercase text-muted hover:text-ink transition-colors"
           >
             <ArrowLeft size={13} />
-            <span>All Categories</span>
+            <span>All Departments</span>
           </Link>
         </div>
 
         {/* Category Header */}
-        <div className="pt-2">
+        <div className="pt-1">
           <h1 className="font-display text-[clamp(1.85rem,4vw,2.75rem)] leading-tight text-ink">
             {title}
           </h1>
-          <p className="mt-2 max-w-xl text-sm md:text-base text-muted leading-relaxed">
+          <p className="mt-1.5 max-w-xl text-sm md:text-base text-muted leading-relaxed">
             {description}
           </p>
         </div>
 
-        {/* TOOLBAR: Filter button on the left, Sort selector on the right in the EXACT SAME LINE */}
-        <div className="flex items-center justify-between gap-3 border-y border-line/80 py-3 mt-6 mb-8">
-          {/* Left: Compact Filter Button */}
+        {/* Horizontal Subcategory Scrolling Chips (Luxury Affordance) */}
+        {categorySubcategories.length > 0 && (
+          <div className="mt-5 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-none overscroll-x-contain pb-1">
+            <div className="flex items-center gap-2 min-w-max">
+              <button
+                type="button"
+                onClick={() => setParam("sub", "")}
+                className={`h-8 px-3.5 text-[11px] font-semibold tracking-[0.08em] uppercase transition-colors rounded-sm cursor-pointer whitespace-nowrap ${
+                  !sub
+                    ? "bg-ink text-warm-white"
+                    : "bg-paper border border-line text-ink/80 hover:border-ink hover:text-ink"
+                }`}
+              >
+                All {categoryLabels[category!]}
+              </button>
+              {categorySubcategories.map((item) => {
+                const isSelected = sub === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setParam("sub", isSelected ? "" : item.id)}
+                    className={`h-8 px-3.5 text-[11px] font-semibold tracking-[0.08em] uppercase transition-colors rounded-sm cursor-pointer whitespace-nowrap ${
+                      isSelected
+                        ? "bg-ink text-warm-white"
+                        : "bg-paper border border-line text-ink/80 hover:border-ink hover:text-ink"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TOOLBAR: Filter toggle button on the left, Sort selector on the right */}
+        <div className="flex items-center justify-between gap-3 border-y border-line/80 py-2.5 mt-3 mb-6">
+          {/* Left: Compact Filter Button + Count */}
           <div className="flex items-center gap-2.5">
             <button
               type="button"
-              className="lg:hidden inline-flex h-9 items-center gap-1.5 border border-line bg-paper px-3 text-xs font-medium tracking-[0.08em] uppercase text-ink hover:border-ink transition-colors cursor-pointer rounded-sm"
+              className="md:hidden inline-flex h-8 items-center gap-1.5 border border-line bg-paper px-2.5 text-[11px] font-semibold tracking-[0.08em] uppercase text-ink hover:border-ink transition-colors cursor-pointer rounded-sm shrink-0"
               onClick={() => setMobileFilters(true)}
               aria-label="Filter products"
             >
-              <SlidersHorizontal size={14} strokeWidth={1.75} />
+              <SlidersHorizontal size={13} strokeWidth={1.75} />
               <span>Filters</span>
               {activeFilterCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[10px] font-semibold flex items-center justify-center">
+                <span className="w-4 h-4 rounded-full bg-ink text-warm-white text-[9px] font-semibold flex items-center justify-center">
                   {activeFilterCount}
                 </span>
               )}
             </button>
 
-            <span className="text-xs font-medium text-ink/75">
+            <span className="text-[11px] sm:text-xs font-medium text-ink/75 shrink-0">
               {filtered.length} {filtered.length === 1 ? "object" : "objects"}
             </span>
-
-            {/* Active subcategory tag */}
-            {sub && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-bone text-ink border border-line">
-                {sub}
-                <button
-                  type="button"
-                  onClick={() => setParam("sub", "")}
-                  className="hover:text-tobacco ml-0.5 cursor-pointer"
-                  aria-label={`Remove ${sub} filter`}
-                >
-                  <X size={12} />
-                </button>
-              </span>
-            )}
           </div>
 
           {/* Right: Prominent Compact Sort Selector on the same line */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <span className="text-[11px] font-sans uppercase tracking-wider text-muted hidden sm:inline">
               Sort
             </span>
@@ -350,7 +412,7 @@ function ShopInner({
               <select
                 value={sort ?? "featured"}
                 onChange={(e) => setParam("sort", e.target.value)}
-                className="h-9 appearance-none bg-paper border border-line pl-3 pr-8 text-xs font-medium uppercase tracking-[0.06em] text-ink hover:border-ink focus:outline-none focus:border-ink cursor-pointer rounded-sm transition-colors"
+                className="h-8 appearance-none bg-paper border border-line pl-2.5 pr-7 text-[11px] font-semibold uppercase tracking-[0.06em] text-ink hover:border-ink focus:outline-none focus:border-ink cursor-pointer rounded-sm transition-colors"
                 aria-label="Sort products"
               >
                 <option value="featured">Featured</option>
@@ -358,24 +420,70 @@ function ShopInner({
                 <option value="price-desc">Price: High to Low</option>
                 <option value="name">Name: A to Z</option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ink/70">
-                <ArrowUpDown size={12} strokeWidth={1.75} />
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-ink/70">
+                <ArrowUpDown size={11} strokeWidth={1.75} />
               </div>
             </div>
           </div>
         </div>
 
+        {/* Active Filter Tags Row (Clean wrapped row that never squishes the toolbar) */}
+        {(color || (sub && !category)) && (
+          <div className="flex flex-wrap items-center gap-2 -mt-3 mb-6">
+            <span className="text-[10px] tracking-wider uppercase text-muted font-medium">
+              Active:
+            </span>
+            {sub && (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-sm bg-paper text-ink border border-line">
+                <span>{sub}</span>
+                <button
+                  type="button"
+                  onClick={() => setParam("sub", "")}
+                  className="hover:text-tobacco cursor-pointer ml-0.5"
+                  aria-label={`Remove ${sub} filter`}
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            )}
+            {color && (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-sm bg-paper text-ink border border-line">
+                <span>Colour: {color}</span>
+                <button
+                  type="button"
+                  onClick={() => setParam("color", "")}
+                  className="hover:text-tobacco cursor-pointer ml-0.5"
+                  aria-label="Remove colour filter"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setParam("sub", "");
+                setParam("color", "");
+                setParam("sort", "");
+              }}
+              className="text-[11px] tracking-wider uppercase text-muted hover:text-ink underline ml-1 cursor-pointer"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
+
         {/* Content Layout */}
-        <div className="grid gap-8 lg:grid-cols-12">
+        <div className="grid gap-8 md:grid-cols-12">
           {/* Desktop Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-3">
+          <aside className="hidden md:block md:col-span-4 lg:col-span-3">
             <ShopFilters activeCategory={category} resultCount={filtered.length} />
           </aside>
 
           {/* Product Grid */}
-          <div className="lg:col-span-9">
+          <div className="col-span-12 md:col-span-8 lg:col-span-9">
             {filtered.length === 0 ? (
-              <div className="py-20 text-center bg-paper/40 border border-line/50 p-8 rounded-sm">
+              <div className="py-16 text-center bg-paper/40 border border-line/50 p-6 rounded-sm">
                 <p className="font-display text-2xl text-ink">No objects match</p>
                 <p className="mt-2 text-sm text-muted">
                   Clear active filters to view all products in this department.
@@ -392,7 +500,7 @@ function ShopInner({
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3.5 gap-y-8 sm:gap-x-5 sm:gap-y-10">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-3.5 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                 {filtered.map((product, index) => (
                   <ProductCard
                     key={product.id}
@@ -408,14 +516,14 @@ function ShopInner({
 
       {/* Mobile Filters Drawer */}
       {mobileFilters && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 md:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-ink/50 backdrop-blur-xs"
             aria-label="Close filters"
             onClick={() => setMobileFilters(false)}
           />
-          <div className="absolute inset-y-0 left-0 w-[min(100%,320px)] bg-warm-white p-6 overflow-y-auto animate-drawer-in translate-x-0 shadow-2xl flex flex-col justify-between">
+          <div className="absolute inset-y-0 left-0 w-[min(100%,320px)] max-w-full bg-warm-white p-5 sm:p-6 overflow-y-auto animate-drawer-in translate-x-0 shadow-2xl flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-line mb-6">
                 <p className="text-[12px] font-sans font-semibold tracking-[0.16em] uppercase text-ink">
