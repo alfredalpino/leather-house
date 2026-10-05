@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Grid, Sparkles, Search, User } from "lucide-react";
+import { Home, Grid, Sparkles, User } from "lucide-react";
 import { motion } from "motion/react";
-import { useUi } from "@/lib/ui-context";
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { openSearch } = useUi();
 
   const isHome = pathname === "/";
   const isShop = pathname.startsWith("/shop") && !pathname.includes("/fragrance");
@@ -17,10 +15,10 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-warm-white/94 backdrop-blur-md border-t border-line/80 shadow-[0_-6px_20px_rgba(20,19,18,0.06)] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] pt-1 px-2 select-none"
+      className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-warm-white/94 backdrop-blur-md border-t border-line/80 shadow-[0_-6px_20px_rgba(20,19,18,0.06)] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] pt-1 px-3 select-none"
       aria-label="App Navigation"
     >
-      <div className="grid grid-cols-5 items-center justify-items-center h-14">
+      <div className="grid grid-cols-4 items-center justify-items-center h-14">
         {/* Home */}
         <Link
           href="/"
@@ -86,19 +84,6 @@ export function MobileBottomNav() {
             />
           )}
         </Link>
-
-        {/* Search */}
-        <button
-          type="button"
-          onClick={openSearch}
-          className="relative flex flex-col items-center justify-center w-full h-full py-1 text-center text-muted hover:text-ink transition-colors"
-          aria-label="Search objects"
-        >
-          <Search size={19} strokeWidth={1.6} />
-          <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
-            Search
-          </span>
-        </button>
 
         {/* Profile */}
         <Link
