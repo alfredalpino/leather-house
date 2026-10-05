@@ -75,7 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <AnnouncementBar />
           <Header />
-          <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+          <main className="flex-1 pb-16 md:pb-0">{children}</main>
           <Footer />
           <CartDrawer />
           <CartToast />

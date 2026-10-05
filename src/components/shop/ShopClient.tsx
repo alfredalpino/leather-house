@@ -113,7 +113,7 @@ function ShopInner({
       subtitle: "Saddle Flap Purses & Evening Clutches",
       href: "/shop/leather?sub=bags",
       image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=900&q=80",
-      count: 2,
+      count: products.filter((p) => p.slug.includes("purse") || p.slug.includes("clutch")).length,
     },
     {
       title: "Wallets & Cardholders",

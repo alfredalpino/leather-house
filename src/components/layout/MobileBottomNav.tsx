@@ -50,7 +50,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-warm-white/94 backdrop-blur-md border-t border-line/80 shadow-[0_-6px_20px_rgba(20,19,18,0.06)] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] pt-1 px-3 select-none"
+      className="fixed bottom-0 inset-x-0 z-40 md:hidden mobile-bottom-nav bg-warm-white/94 backdrop-blur-md border-t border-line/80 shadow-[0_-6px_20px_rgba(20,19,18,0.06)] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] pt-1 px-3 select-none"
       aria-label="App Navigation"
     >
       <div className="grid grid-cols-4 items-center justify-items-center h-14">

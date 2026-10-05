@@ -14,6 +14,59 @@ export type NavItem = {
 
 export const primaryNav: NavItem[] = [
   {
+    label: "Shop",
+    href: "/shop",
+    links: [
+      {
+        label: "All Departments",
+        href: "/shop",
+        description: "Browse the category department hub",
+      },
+      {
+        label: "Belts",
+        href: "/shop/leather?sub=belts",
+        description: "Full-grain bridle leather with solid brass buckles",
+      },
+      {
+        label: "Soft Footwear & Boots",
+        href: "/shop/footwear",
+        description: "Handcrafted oxfords, loafers and Chelsea boots",
+      },
+      {
+        label: "Bags & Purses",
+        href: "/shop/leather?sub=bags",
+        description: "Briefcases, duffles and saddle flap purses",
+      },
+      {
+        label: "Wallets & Cardholders",
+        href: "/shop/leather?sub=wallets",
+        description: "Vegetable-tanned bifolds and slim sleeves",
+      },
+      {
+        label: "Leather Jackets",
+        href: "/shop/leather?sub=jackets",
+        description: "Bikers, suede overshirts and flight jackets",
+      },
+      {
+        label: "Royal Attar & Itr",
+        href: "/shop/fragrance?sub=attar",
+        description: "Pure copper deg distillations: Shamama, Ruh Gulab & Mitti",
+      },
+      {
+        label: "Royal Oud",
+        href: "/shop/fragrance?sub=oud",
+        description: "Aged Assam Agarwood & Safed White Oud",
+      },
+      {
+        label: "Formal Accessories",
+        href: "/shop/accessories",
+        description: "Silk ties, brass cufflinks and tie pins",
+      },
+    ],
+    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=900&q=80",
+    imageAlt: "Leather goods collection",
+  },
+  {
     label: "Collections",
     href: "/collections",
     links: [

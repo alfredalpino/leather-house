@@ -250,3 +250,11 @@
 * {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Strictly hide mobile app bottom navigation bar on all desktop and tablet viewports */
+@media (min-width: 768px) {
+  nav[aria-label="App Navigation"],
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}

@@ -51,7 +51,7 @@ export function Header() {
           <div className="flex items-center gap-1 sm:gap-2">
             <button
               type="button"
-              className="lg:hidden inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink rounded-sm hover:bg-paper transition-colors"
+              className="md:hidden inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink rounded-sm hover:bg-paper transition-colors"
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               onClick={toggleMobileNav}
@@ -65,7 +65,7 @@ export function Header() {
 
             <Link
               href="/"
-              className="shrink-0 font-display text-[1.2rem] leading-none tracking-[0.01em] text-ink sm:text-[1.4rem] lg:text-[1.75rem]"
+              className="shrink-0 font-display text-[1.2rem] leading-none tracking-[0.01em] text-ink sm:text-[1.35rem] md:text-[1.5rem] lg:text-[1.75rem]"
               onClick={closeMobileNav}
             >
               Leather House
@@ -73,7 +73,7 @@ export function Header() {
           </div>
 
           <nav
-            className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1"
+            className="hidden md:flex min-w-0 flex-1 items-center justify-center gap-0.5 lg:gap-1"
             aria-label="Primary"
           >
             {primaryNav.map((item) => {
@@ -87,7 +87,7 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
-                    className={`inline-flex h-11 items-center px-3 text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
+                    className={`inline-flex h-11 items-center px-2 lg:px-3 text-[11px] lg:text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
                       isOpen ? "text-ink" : "text-ink/85 hover:text-ink"
                     }`}
                     onFocus={() => setActiveMega(item.label)}
@@ -139,7 +139,7 @@ export function Header() {
         </div>
 
         <div
-          className={`hidden lg:block absolute inset-x-0 top-full transition-opacity duration-[320ms] ${
+          className={`hidden md:block absolute inset-x-0 top-full transition-opacity duration-[320ms] ${
             activeMega ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           onMouseEnter={() => activeMega && setActiveMega(activeMega)}
@@ -195,9 +195,9 @@ export function Header() {
         </div>
       </header>
 
-      {/* Fullscreen Mobile Navigation Menu - 100% Screen Width & Height */}
+      {/* Fullscreen Mobile Navigation Menu - Mobile Phones Only */}
       <div
-        className={`fixed inset-0 z-[70] lg:hidden bg-warm-white flex flex-col transition-all duration-[300ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed inset-0 z-[70] md:hidden bg-warm-white flex flex-col transition-all duration-[300ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           mobileNavOpen
             ? "opacity-100 pointer-events-auto translate-x-0"
             : "opacity-0 pointer-events-none -translate-x-full"
