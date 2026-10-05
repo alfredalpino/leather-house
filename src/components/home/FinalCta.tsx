@@ -2,37 +2,25 @@ import { Button } from "@/components/ui/Button";
 
 export function FinalCta() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-ink) 45%, var(--color-forest) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle at 70% 30%, rgba(165,138,90,0.25), transparent 40%)",
-        }}
-      />
-      <div className="container-editorial relative text-center text-warm-white">
-        <h2 className="font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-tight text-balance max-w-3xl mx-auto">
+    <section className="border-t border-line bg-ink text-warm-white py-16 md:py-20">
+      <div className="container-catalogue text-center">
+        <p className="text-[11px] tracking-[0.2em] uppercase text-stone">
+          The house
+        </p>
+        <h2 className="mt-3 font-display text-[clamp(1.85rem,4vw,2.75rem)] leading-tight text-balance max-w-2xl mx-auto">
           Find something worth keeping.
         </h2>
-        <p className="mt-5 text-stone-cool/90 text-base md:text-lg max-w-lg mx-auto">
-          Browse the digital house, or walk the Aminabad floor. Either way,
-          choose with judgment.
+        <p className="mt-4 text-stone-cool/90 text-sm md:text-base max-w-md mx-auto leading-relaxed">
+          Browse online or walk the Aminabad floor. Either way, choose with judgment.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button href="/shop" variant="inverse">
-            Explore the House
+            Shop now
           </Button>
           <Button
             href="/store"
             variant="secondary"
-            className="border-warm-white text-warm-white hover:bg-warm-white hover:text-ink"
+            className="border-warm-white/70 text-warm-white hover:bg-warm-white hover:text-ink"
           >
             Visit the store
           </Button>

@@ -28,7 +28,7 @@ const timeline = [
 
 export default function HousePage() {
   return (
-    <div className="pt-[72px]">
+    <div>
       <section className="container-editorial py-14 md:py-20">
         <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
           The House

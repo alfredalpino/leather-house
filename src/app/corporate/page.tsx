@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function CorporatePage() {
   return (
-    <div className="pt-[72px]">
+    <div>
       <div className="container-editorial py-14 md:py-20 grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted">

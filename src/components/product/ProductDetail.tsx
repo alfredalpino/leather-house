@@ -39,8 +39,8 @@ export function ProductDetail({
   };
 
   return (
-    <div className="pt-[72px]">
-      <div className="container-editorial py-8 md:py-12">
+    <div>
+      <div className="container-catalogue py-8 md:py-12">
         <nav aria-label="Breadcrumb" className="text-xs text-muted tracking-[0.06em]">
           <Link href="/shop" className="hover:text-ink">
             Shop

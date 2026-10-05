@@ -29,7 +29,7 @@ export default async function JournalArticlePage({
   if (!post) notFound();
 
   return (
-    <article className="pt-[72px]">
+    <article>
       <div className="container-editorial py-12 md:py-16 max-w-3xl">
         <Link
           href="/journal"

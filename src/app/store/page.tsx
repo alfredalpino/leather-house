@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function StorePage() {
   return (
-    <div className="pt-[72px]">
+    <div>
       <section className="relative min-h-[50svh] flex items-end overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1800&q=85"

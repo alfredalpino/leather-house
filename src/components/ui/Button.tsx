@@ -9,7 +9,7 @@ const variants: Record<Variant, string> = {
   secondary:
     "bg-transparent text-ink border border-ink hover:bg-ink hover:text-warm-white",
   tertiary:
-    "bg-transparent text-ink border-b border-ink rounded-none px-0 h-auto pb-1 hover:border-tobacco",
+    "bg-transparent text-ink border-b border-ink rounded-none px-0 h-auto pb-1 hover:border-accent",
   inverse:
     "bg-warm-white text-ink border border-warm-white hover:bg-bone",
 };

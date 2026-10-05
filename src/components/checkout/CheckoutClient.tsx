@@ -22,7 +22,7 @@ export function CheckoutClient() {
 
   if (done) {
     return (
-      <div className="pt-[72px]">
+      <div>
         <div className="container-editorial py-20 max-w-xl text-center">
           <p className="font-display text-4xl">Order recorded</p>
           <p className="mt-4 text-muted leading-relaxed">
@@ -39,7 +39,7 @@ export function CheckoutClient() {
 
   if (items.length === 0) {
     return (
-      <div className="pt-[72px]">
+      <div>
         <div className="container-editorial py-20 max-w-xl text-center">
           <p className="font-display text-3xl">Nothing to check out</p>
           <p className="mt-3 text-muted">Add objects from the catalogue first.</p>
@@ -69,7 +69,7 @@ export function CheckoutClient() {
     "mt-2 w-full h-12 border border-stone bg-warm-white px-3 text-sm rounded-[var(--radius-sm)]";
 
   return (
-    <div className="pt-[72px]">
+    <div>
       <div className="container-editorial py-12 md:py-16 grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <h1 className="font-display text-3xl md:text-4xl">Checkout</h1>
@@ -201,7 +201,7 @@ export function CheckoutClient() {
                   <div>
                     <Link
                       href={`/product/${item.product.slug}`}
-                      className="text-sm hover:text-tobacco"
+                      className="text-sm hover:text-accent"
                     >
                       {item.product.name}
                     </Link>

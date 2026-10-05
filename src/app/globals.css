@@ -1,29 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --color-ink: #171716;
-  --color-charcoal: #242321;
-  --color-bone: #f1ede4;
-  --color-warm-white: #f8f6f1;
-  --color-stone: #c8c0b2;
-  --color-stone-cool: #d6d2c8;
-  --color-tobacco: #76563d;
-  --color-oxide: #8b4932;
-  --color-brass: #a58a5a;
-  --color-forest: #344139;
-  --color-muted: #6b655c;
+  --color-ink: #141312;
+  --color-charcoal: #2a2826;
+  --color-bone: #ece9e2;
+  --color-warm-white: #f7f6f3;
+  --color-paper: #f3f1ec;
+  --color-stone: #c5c0b6;
+  --color-stone-cool: #d4d0c7;
+  --color-line: #ddd8cf;
+  --color-tobacco: #6b5340;
+  --color-oxide: #7a4f3a;
+  --color-accent: #5c4a3a;
+  --color-brass: #9a8660;
+  --color-forest: #2f3a33;
+  --color-muted: #6e6860;
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-micro: 160ms;
   --duration-standard: 320ms;
   --duration-editorial: 700ms;
 
-  --header-h: 72px;
+  --header-h: 64px;
   --header-h-compact: 56px;
+  --announce-h: 36px;
 
   --background: var(--color-warm-white);
   --foreground: var(--color-ink);
@@ -34,17 +38,20 @@
   --color-charcoal: var(--color-charcoal);
   --color-bone: var(--color-bone);
   --color-warm-white: var(--color-warm-white);
+  --color-paper: var(--color-paper);
   --color-stone: var(--color-stone);
   --color-stone-cool: var(--color-stone-cool);
+  --color-line: var(--color-line);
   --color-tobacco: var(--color-tobacco);
   --color-oxide: var(--color-oxide);
+  --color-accent: var(--color-accent);
   --color-brass: var(--color-brass);
   --color-forest: var(--color-forest);
   --color-muted: var(--color-muted);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-manrope);
-  --font-display: var(--font-instrument);
+  --font-display: var(--font-cormorant);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
@@ -75,10 +82,7 @@
 
   body {
     background:
-      radial-gradient(120% 80% at 0% 0%, rgba(52, 65, 57, 0.06), transparent 45%),
-      radial-gradient(90% 60% at 100% 10%, rgba(118, 86, 61, 0.05), transparent 40%),
-      linear-gradient(180deg, var(--color-warm-white) 0%, var(--color-bone) 55%, var(--color-warm-white) 100%);
-    background-attachment: fixed;
+      linear-gradient(180deg, var(--color-warm-white) 0%, var(--color-paper) 100%);
     color: var(--color-ink);
     font-family: var(--font-manrope), sans-serif;
     font-weight: 400;
@@ -87,7 +91,7 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-forest) 22%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
     color: var(--color-ink);
   }
 
@@ -102,7 +106,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-forest);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
@@ -114,16 +118,19 @@
 
 @layer utilities {
   .font-display {
-    font-family: var(--font-instrument), Georgia, serif;
+    font-family: var(--font-cormorant), "Times New Roman", serif;
+    font-weight: 500;
   }
 
-  .container-editorial {
+  .container-editorial,
+  .container-catalogue {
     width: min(100% - 2rem, 1280px);
     margin-inline: auto;
   }
 
   @media (min-width: 768px) {
-    .container-editorial {
+    .container-editorial,
+    .container-catalogue {
       width: min(100% - 4rem, 1280px);
     }
   }
@@ -140,21 +147,24 @@
     animation: reveal-fade var(--duration-editorial) var(--ease-out) both;
   }
 
-  .grain {
-    background-image:
-      linear-gradient(
-        135deg,
-        rgba(23, 23, 22, 0.03) 0%,
-        transparent 40%,
-        rgba(52, 65, 57, 0.04) 100%
-      );
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-stone) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--color-stone);
   }
 }
 
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;

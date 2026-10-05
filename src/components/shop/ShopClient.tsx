@@ -63,18 +63,18 @@ function ShopInner({
   const title = category ? categoryLabels[category] : "Shop";
 
   return (
-    <div className="pt-[72px]">
-      <div className="container-editorial py-10 md:py-14">
+    <div>
+      <div className="container-catalogue py-8 md:py-12">
         <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
           Catalogue
         </p>
-        <h1 className="mt-2 font-display text-[clamp(2.25rem,5vw,3.5rem)]">
+        <h1 className="mt-2 font-display text-[clamp(1.85rem,4vw,2.75rem)]">
           {title}
         </h1>
-        <p className="mt-3 max-w-xl text-muted">
+        <p className="mt-3 max-w-xl text-sm md:text-base text-muted">
           {category
-            ? `Explore ${categoryLabels[category].toLowerCase()} selected for material quality and practical elegance.`
-            : "Leather, footwear, accessories and fragrance. Browse the house."}
+            ? `${categoryLabels[category]} selected for material quality and lasting wear.`
+            : "Leather, footwear, accessories and fragrance from the house."}
         </p>
 
         <div className="mt-8 lg:hidden">
@@ -102,7 +102,7 @@ function ShopInner({
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-8 md:gap-x-4 md:gap-y-10">
                 {filtered.map((product, index) => (
                   <ProductCard
                     key={product.id}
@@ -154,7 +154,7 @@ export function ShopClient({
   return (
     <Suspense
       fallback={
-        <div className="pt-[72px] container-editorial py-20 text-muted">
+        <div className="container-catalogue py-20 text-muted">
           Loading catalogue…
         </div>
       }

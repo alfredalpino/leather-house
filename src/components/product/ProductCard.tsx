@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { useState } from "react";
 import type { Product } from "@/lib/data/products";
 import { formatPrice } from "@/lib/data/products";
@@ -15,7 +14,6 @@ export function ProductCard({
   priority?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const [saved, setSaved] = useState(false);
   const [primaryFailed, setPrimaryFailed] = useState(false);
 
   const primary = product.images[0];
@@ -31,13 +29,12 @@ export function ProductCard({
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-bone">
         <Link href={`/product/${product.slug}`} className="absolute inset-0 block">
-          {/* Always-visible base; stays if primary fails or fades on hover */}
           <Image
             src={secondary}
             alt=""
             fill
             className={`object-cover transition-transform duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              hovered ? "scale-[1.04]" : "scale-100"
+              hovered ? "scale-[1.03]" : "scale-100"
             }`}
             sizes="(max-width: 768px) 50vw, 25vw"
             aria-hidden
@@ -57,39 +54,34 @@ export function ProductCard({
             />
           )}
         </Link>
-        <button
-          type="button"
-          className="absolute right-2 top-2 z-10 inline-flex h-10 w-10 items-center justify-center bg-warm-white/90 text-ink hover:bg-warm-white transition-colors"
-          aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
-          aria-pressed={saved}
-          onClick={() => setSaved((v) => !v)}
-        >
-          <Heart
-            size={18}
-            strokeWidth={1.5}
-            className={saved ? "fill-ink" : ""}
-          />
-        </button>
         {product.availability === "limited" && (
-          <p className="absolute left-2 bottom-2 z-10 bg-ink/90 text-warm-white text-[10px] tracking-[0.14em] uppercase px-2 py-1">
+          <p className="absolute left-2 top-2 z-10 bg-warm-white/95 text-ink text-[10px] tracking-[0.14em] uppercase px-2 py-1">
             Limited
           </p>
         )}
+        <Link
+          href={`/product/${product.slug}`}
+          tabIndex={hovered ? 0 : -1}
+          className={`absolute inset-x-2 bottom-2 z-10 hidden md:flex items-center justify-center h-10 bg-warm-white/95 text-ink text-[11px] tracking-[0.14em] uppercase transition-all duration-300 ${
+            hovered
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 translate-y-1 pointer-events-none"
+          }`}
+        >
+          View details
+        </Link>
       </div>
       <div className="mt-3 space-y-1">
-        <p className="text-[11px] tracking-[0.14em] uppercase text-muted">
+        <p className="text-[10px] tracking-[0.16em] uppercase text-muted">
           {product.category}
         </p>
         <Link
           href={`/product/${product.slug}`}
-          className="block text-base leading-snug hover:text-tobacco transition-colors"
+          className="block text-[15px] leading-snug text-ink hover:text-accent transition-colors"
         >
           {product.name}
         </Link>
-        <div className="flex items-center justify-between gap-3 pt-0.5">
-          <p className="text-sm">{formatPrice(product.price)}</p>
-          <p className="text-xs text-muted truncate">{product.material}</p>
-        </div>
+        <p className="pt-0.5 text-sm text-ink/90">{formatPrice(product.price)}</p>
       </div>
     </article>
   );

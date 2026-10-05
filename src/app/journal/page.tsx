@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function JournalPage() {
   return (
-    <div className="pt-[72px]">
+    <div>
       <div className="container-editorial py-14 md:py-20">
         <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
           Journal
@@ -47,7 +47,7 @@ export default function JournalPage() {
                 {post.category} · {post.readTime}
               </p>
               <h2
-                className={`mt-2 group-hover:text-tobacco transition-colors ${
+                className={`mt-2 group-hover:text-accent transition-colors ${
                   i === 0 ? "font-display text-3xl md:text-4xl" : "text-xl md:text-2xl"
                 }`}
               >

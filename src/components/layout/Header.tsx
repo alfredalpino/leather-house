@@ -14,8 +14,6 @@ export function Header() {
   const [compact, setCompact] = useState(false);
   const [activeMega, setActiveMega] = useState<string | null>(null);
 
-  const solidBar = compact || mobileNavOpen || Boolean(activeMega);
-
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 24);
     onScroll();
@@ -33,79 +31,75 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[height,background-color,box-shadow,backdrop-filter] duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          solidBar
-            ? "h-14 bg-warm-white/95 backdrop-blur-md border-b border-stone/55 shadow-[0_1px_0_rgba(23,23,22,0.04)]"
-            : "h-[72px] bg-warm-white/88 backdrop-blur-md border-b border-stone/40"
+        className={`sticky top-9 z-50 border-b border-line bg-warm-white/96 backdrop-blur-md transition-[height] duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          compact ? "h-14" : "h-16"
         }`}
       >
-        <div className="container-editorial flex h-full items-center justify-between gap-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
-          <div className="flex min-w-0 items-center gap-1 justify-self-start sm:gap-2">
-            <button
-              type="button"
-              className="lg:hidden inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink"
-              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileNavOpen}
-              onClick={toggleMobileNav}
-            >
-              {mobileNavOpen ? (
-                <X size={22} strokeWidth={2} />
-              ) : (
-                <Menu size={22} strokeWidth={2} />
-              )}
-            </button>
+        <div className="flex h-full items-center gap-1 px-3 md:px-8 lg:px-[max(2rem,calc((100vw-1280px)/2+2rem))]">
+          <button
+            type="button"
+            className="lg:hidden inline-flex h-10 w-10 shrink-0 items-center justify-center text-ink"
+            aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileNavOpen}
+            onClick={toggleMobileNav}
+          >
+            {mobileNavOpen ? (
+              <X size={20} strokeWidth={1.75} />
+            ) : (
+              <Menu size={20} strokeWidth={1.75} />
+            )}
+          </button>
 
-            <Link
-              href="/"
-              className="font-display truncate text-[1.45rem] leading-none tracking-[-0.02em] text-ink sm:text-[1.55rem] md:text-[1.75rem]"
-              onClick={closeMobileNav}
-            >
-              Leather House
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="shrink-0 font-display text-[1.15rem] leading-none tracking-[0.01em] text-ink sm:text-[1.35rem] lg:text-[1.75rem]"
+            onClick={closeMobileNav}
+          >
+            Leather House
+          </Link>
 
           <nav
-            className="hidden lg:flex items-center justify-center gap-0.5"
+            className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-0.5"
             aria-label="Primary"
           >
-            {primaryNav.map((item) => {
-              const isOpen = activeMega === item.label;
-              return (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => setActiveMega(item.label)}
-                  onMouseLeave={() => setActiveMega(null)}
-                >
-                  <Link
-                    href={item.href}
-                    className={`inline-flex h-11 items-center px-3.5 text-[14px] font-semibold tracking-[0.06em] uppercase transition-colors ${
-                      isOpen ? "text-ink" : "text-ink hover:text-tobacco"
-                    }`}
-                    onFocus={() => setActiveMega(item.label)}
-                    aria-expanded={item.links ? isOpen : undefined}
+              {primaryNav.map((item) => {
+                const isOpen = activeMega === item.label;
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setActiveMega(item.label)}
+                    onMouseLeave={() => setActiveMega(null)}
                   >
-                    <span
-                      className={`border-b-2 pb-0.5 transition-[border-color] duration-200 ${
-                        isOpen ? "border-ink" : "border-transparent"
+                    <Link
+                      href={item.href}
+                      className={`inline-flex h-11 items-center px-3 text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
+                        isOpen ? "text-ink" : "text-ink/85 hover:text-ink"
                       }`}
+                      onFocus={() => setActiveMega(item.label)}
+                      aria-expanded={item.links ? isOpen : undefined}
                     >
-                      {item.label}
-                    </span>
-                  </Link>
-                </div>
-              );
-            })}
-          </nav>
+                      <span
+                        className={`border-b pb-0.5 transition-[border-color] duration-200 ${
+                          isOpen ? "border-ink" : "border-transparent"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })}
+            </nav>
 
-          <div className="flex shrink-0 items-center gap-0.5 justify-self-end lg:col-start-3">
+          <div className="ml-auto flex shrink-0 items-center">
             <button
               type="button"
               className="inline-flex h-11 w-11 items-center justify-center text-ink"
               aria-label="Search"
               onClick={openSearch}
             >
-              <Search size={20} strokeWidth={2} />
+              <Search size={18} strokeWidth={1.75} />
             </button>
             <button
               type="button"
@@ -113,9 +107,9 @@ export function Header() {
               aria-label={`Bag, ${itemCount} items`}
               onClick={openCart}
             >
-              <ShoppingBag size={20} strokeWidth={2} />
+              <ShoppingBag size={18} strokeWidth={1.75} />
               {itemCount > 0 && (
-                <span className="absolute right-1.5 top-1.5 min-w-[16px] h-4 px-1 rounded-[2px] bg-ink text-warm-white text-[10px] font-medium leading-4 text-center">
+                <span className="absolute right-1.5 top-1.5 min-w-[16px] h-4 px-1 rounded-[1px] bg-ink text-warm-white text-[10px] font-medium leading-4 text-center">
                   {itemCount}
                 </span>
               )}
@@ -123,7 +117,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Desktop mega menu */}
         <div
           className={`hidden lg:block absolute inset-x-0 top-full transition-opacity duration-[320ms] ${
             activeMega ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -135,14 +128,14 @@ export function Header() {
             item.label === activeMega && item.links ? (
               <div
                 key={item.label}
-                className="border-b border-stone/60 bg-warm-white/98 backdrop-blur-md shadow-[0_12px_40px_rgba(23,23,22,0.08)]"
+                className="border-b border-line bg-warm-white shadow-[0_10px_30px_rgba(20,19,18,0.06)]"
               >
-                <div className="container-editorial grid grid-cols-12 gap-8 py-8">
+                <div className="container-catalogue grid grid-cols-12 gap-8 py-7">
                   <div className="col-span-5 flex flex-col gap-4">
                     <p className="text-[11px] font-medium tracking-[0.16em] uppercase text-muted">
                       {item.label}
                     </p>
-                    <ul className="space-y-3">
+                    <ul className="space-y-2.5">
                       {item.links.map((link) => (
                         <li key={link.href}>
                           <Link
@@ -150,7 +143,7 @@ export function Header() {
                             className="group block"
                             onClick={() => setActiveMega(null)}
                           >
-                            <span className="text-base font-medium text-ink group-hover:text-tobacco transition-colors">
+                            <span className="text-[15px] font-medium text-ink group-hover:text-accent transition-colors">
                               {link.label}
                             </span>
                             {link.description && (
@@ -164,7 +157,7 @@ export function Header() {
                     </ul>
                   </div>
                   {item.image && (
-                    <div className="col-span-7 relative aspect-[16/9] overflow-hidden bg-stone-cool">
+                    <div className="col-span-7 relative aspect-[16/9] overflow-hidden bg-bone">
                       <Image
                         src={item.image}
                         alt={item.imageAlt ?? item.label}
@@ -181,7 +174,6 @@ export function Header() {
         </div>
       </header>
 
-      {/* Mobile nav */}
       <div
         className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-[320ms] ${
           mobileNavOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -189,33 +181,33 @@ export function Header() {
       >
         <button
           type="button"
-          className="absolute inset-0 bg-ink/40"
+          className="absolute inset-0 bg-ink/35"
           aria-label="Close menu overlay"
           onClick={closeMobileNav}
         />
         <nav
-          className={`absolute left-0 top-0 h-full w-[min(100%,360px)] bg-warm-white pt-20 px-6 pb-10 overflow-y-auto transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`absolute left-0 top-0 h-full w-[min(100%,340px)] bg-warm-white pt-[calc(var(--announce-h)+4.5rem)] px-6 pb-10 overflow-y-auto transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             mobileNavOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-label="Mobile"
         >
-          <ul className="space-y-6">
+          <ul className="space-y-5">
             {primaryNav.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
-                  className="font-display text-3xl text-ink"
+                  className="font-display text-[1.75rem] text-ink tracking-wide"
                   onClick={closeMobileNav}
                 >
                   {item.label}
                 </Link>
                 {item.links && (
-                  <ul className="mt-3 space-y-2 border-l border-stone pl-4">
+                  <ul className="mt-2.5 space-y-2 border-l border-line pl-4">
                     {item.links.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="text-sm font-medium text-muted hover:text-ink transition-colors"
+                          className="text-sm text-muted hover:text-ink transition-colors"
                           onClick={closeMobileNav}
                         >
                           {link.label}
@@ -227,17 +219,17 @@ export function Header() {
               </li>
             ))}
           </ul>
-          <div className="mt-10 pt-6 border-t border-stone space-y-3">
+          <div className="mt-10 pt-6 border-t border-line space-y-3">
             <Link
               href="/store"
-              className="block text-sm font-medium tracking-[0.1em] uppercase"
+              className="block text-xs font-medium tracking-[0.12em] uppercase"
               onClick={closeMobileNav}
             >
               Visit store
             </Link>
             <Link
               href="/corporate"
-              className="block text-sm font-medium tracking-[0.1em] uppercase"
+              className="block text-xs font-medium tracking-[0.12em] uppercase"
               onClick={closeMobileNav}
             >
               Corporate & bulk

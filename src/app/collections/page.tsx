@@ -17,55 +17,63 @@ export default function CollectionsPage() {
   );
 
   return (
-    <div className="pt-[72px]">
-      <section className="relative min-h-[55svh] flex items-end overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=1800&q=85"
-          alt="Leather jacket collection visual"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/20" />
-        <div className="relative z-10 container-editorial pb-14 pt-28 text-warm-white">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-stone">
+    <div>
+      <section className="border-b border-line bg-paper">
+        <div className="container-catalogue py-10 md:py-14">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
             Collections
           </p>
-          <h1 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-tight">
-            Edits from the house.
+          <h1 className="mt-2 font-display text-[clamp(1.85rem,4vw,2.75rem)] leading-tight">
+            Curated edits
           </h1>
-          <p className="mt-4 max-w-lg text-warm-white/85">
-            Focused selections, not an endless catalogue dump.
+          <p className="mt-3 max-w-lg text-sm md:text-base text-muted">
+            Focused selections across leather, footwear and finishing pieces.
           </p>
         </div>
       </section>
 
-      <section id="signature" className="container-editorial py-20 scroll-mt-20">
-        <h2 className="font-display text-3xl md:text-4xl">Signature Edit</h2>
-        <p className="mt-3 max-w-xl text-muted">
-          Objects selected for material, construction and character.
-        </p>
-        <div className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 gap-y-10">
+      <section id="signature" className="container-catalogue py-12 md:py-16 scroll-mt-28">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
+              Signature
+            </p>
+            <h2 className="mt-2 font-display text-[clamp(1.6rem,3vw,2.25rem)]">
+              House favourites
+            </h2>
+          </div>
+          <Link
+            href="/shop"
+            className="text-xs tracking-[0.14em] uppercase border-b border-ink pb-1 hover:border-accent transition-colors"
+          >
+            Shop all
+          </Link>
+        </div>
+        <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-4 md:gap-y-10">
           {signature.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
       </section>
 
-      <section className="bg-bone/80 py-20">
-        <div className="container-editorial grid gap-10 lg:grid-cols-2 lg:items-center">
+      <section className="border-y border-line bg-paper py-12 md:py-16">
+        <div className="container-catalogue grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div>
-            <h2 className="font-display text-3xl md:text-4xl">The Leather Edit</h2>
-            <p className="mt-4 text-muted leading-relaxed max-w-md">
-              Core brand territory: jackets, belts, wallets and bags that define
-              the house name without limiting it.
+            <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
+              Leather
             </p>
-            <Button href="/shop/leather" className="mt-8">
+            <h2 className="mt-2 font-display text-[clamp(1.6rem,3vw,2.25rem)]">
+              The leather edit
+            </h2>
+            <p className="mt-4 text-muted leading-relaxed max-w-md text-sm md:text-base">
+              Jackets, belts, wallets and bags: the core of the house, selected
+              for grain and construction.
+            </p>
+            <Button href="/shop/leather" className="mt-7">
               Shop leather
             </Button>
           </div>
-          <Link href="/shop/leather" className="relative aspect-[16/11] overflow-hidden bg-stone">
+          <Link href="/shop/leather" className="relative aspect-[16/11] overflow-hidden bg-bone">
             <Image
               src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1200&q=80"
               alt="Leather bag"
@@ -77,12 +85,17 @@ export default function CollectionsPage() {
         </div>
       </section>
 
-      <section id="beyond" className="container-editorial py-20 scroll-mt-20">
-        <h2 className="font-display text-3xl md:text-4xl">Beyond Leather</h2>
-        <p className="mt-3 max-w-xl text-muted">
-          Ties, cufflinks, fragrance and attar. The finishing materials of style.
+      <section id="beyond" className="container-catalogue py-12 md:py-16 scroll-mt-28">
+        <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
+          Finishing
         </p>
-        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 gap-y-10">
+        <h2 className="mt-2 font-display text-[clamp(1.6rem,3vw,2.25rem)]">
+          Beyond leather
+        </h2>
+        <p className="mt-3 max-w-xl text-sm md:text-base text-muted">
+          Ties, cufflinks, fragrance and attar.
+        </p>
+        <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-4 md:gap-y-10">
           {beyond.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

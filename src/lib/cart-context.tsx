@@ -15,15 +15,27 @@ export type CartItem = {
   size?: string;
 };
 
+export type CartNotification = {
+  id: number;
+  product: Product;
+  quantity: number;
+  size?: string;
+};
+
 type CartContextValue = {
   items: CartItem[];
   itemCount: number;
   subtotal: number;
   isOpen: boolean;
+  lastNotification: CartNotification | null;
+  dismissNotification: () => void;
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addItem: (product: Product, options?: { size?: string; quantity?: number }) => void;
+  addItem: (
+    product: Product,
+    options?: { size?: string; quantity?: number; openDrawer?: boolean }
+  ) => void;
   removeItem: (productId: string, size?: string) => void;
   updateQuantity: (productId: string, quantity: number, size?: string) => void;
   clearCart: () => void;
@@ -38,6 +50,7 @@ function sameLine(a: CartItem, productId: string, size?: string) {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [lastNotification, setLastNotification] = useState<CartNotification | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -58,6 +71,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem: CartContextValue["addItem"] = (product, options) => {
     const size = options?.size;
     const quantity = options?.quantity ?? 1;
+    const openDrawer = options?.openDrawer ?? false;
+
     setItems((prev) => {
       const existing = prev.find((i) => sameLine(i, product.id, size));
       if (existing) {
@@ -69,8 +84,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { product, quantity, size }];
     });
-    setIsOpen(true);
+
+    setLastNotification({
+      id: Date.now(),
+      product,
+      quantity,
+      size,
+    });
+
+    if (openDrawer) {
+      setIsOpen(true);
+    }
   };
+
+  const dismissNotification = () => setLastNotification(null);
 
   const removeItem = (productId: string, size?: string) => {
     setItems((prev) => prev.filter((i) => !sameLine(i, productId, size)));
@@ -103,6 +130,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         itemCount,
         subtotal,
         isOpen,
+        lastNotification,
+        dismissNotification,
         openCart: () => setIsOpen(true),
         closeCart: () => setIsOpen(false),
         toggleCart: () => setIsOpen((v) => !v),
