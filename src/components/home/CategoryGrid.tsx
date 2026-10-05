@@ -35,11 +35,8 @@ export function CategoryGrid() {
       <div className="container-catalogue">
         <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
           <div>
-            <p className="text-eyebrow text-muted">
-              The Collections
-            </p>
-            <h2 className="mt-1.5 font-display text-[clamp(1.85rem,3.4vw,2.5rem)] leading-tight tracking-tight text-ink">
-              Curated pillars
+            <h2 className="font-display text-[clamp(1.85rem,3.4vw,2.5rem)] leading-tight tracking-tight text-ink">
+              Collections
             </h2>
           </div>
           <Link

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -18,12 +18,34 @@ export function ProductRail({
   products: Product[];
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    const node = scrollerRef.current;
+    if (!node) return;
+    const { scrollLeft, scrollWidth, clientWidth } = node;
+    setCanScrollLeft(scrollLeft > 6);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 8);
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const node = scrollerRef.current;
+    if (!node) return;
+    node.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      node.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [products]);
 
   const scrollBy = (direction: -1 | 1) => {
     const node = scrollerRef.current;
     if (!node) return;
-    const amount = Math.min(node.clientWidth * 0.75, 380);
-    node.scrollBy({ left: direction * amount, behavior: "smooth" });
+    const scrollAmount = node.clientWidth * 0.9;
+    node.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
   };
 
   return (
@@ -43,21 +65,32 @@ export function ProductRail({
             <div className="hidden sm:flex items-center gap-1.5">
               <button
                 type="button"
-                className="inline-flex h-9 w-9 items-center justify-center border border-line text-ink hover:border-ink hover:bg-paper transition-colors focus-visible:outline-2 focus-visible:outline-ink"
-                aria-label="Scroll products left"
+                className={`inline-flex h-9 w-9 items-center justify-center border border-line text-ink transition-all ${
+                  canScrollLeft
+                    ? "hover:border-ink hover:bg-paper cursor-pointer"
+                    : "opacity-30 cursor-not-allowed border-line/50 text-muted"
+                } focus-visible:outline-2 focus-visible:outline-ink`}
+                aria-label="Previous products"
+                disabled={!canScrollLeft}
                 onClick={() => scrollBy(-1)}
               >
                 <ChevronLeft size={16} strokeWidth={1.75} />
               </button>
               <button
                 type="button"
-                className="inline-flex h-9 w-9 items-center justify-center border border-line text-ink hover:border-ink hover:bg-paper transition-colors focus-visible:outline-2 focus-visible:outline-ink"
-                aria-label="Scroll products right"
+                className={`inline-flex h-9 w-9 items-center justify-center border border-line text-ink transition-all ${
+                  canScrollRight
+                    ? "hover:border-ink hover:bg-paper cursor-pointer"
+                    : "opacity-30 cursor-not-allowed border-line/50 text-muted"
+                } focus-visible:outline-2 focus-visible:outline-ink`}
+                aria-label="Next products"
+                disabled={!canScrollRight}
                 onClick={() => scrollBy(1)}
               >
                 <ChevronRight size={16} strokeWidth={1.75} />
               </button>
             </div>
+
             <Link
               href={href}
               className="inline-flex items-center gap-1 text-xs tracking-[0.14em] uppercase text-ink/80 hover:text-ink border-b border-ink/40 hover:border-ink pb-1 transition-colors"
@@ -67,25 +100,25 @@ export function ProductRail({
             </Link>
           </div>
         </div>
-      </div>
 
-      {/* Horizontally scrolling rail aligned with the container start */}
-      <div className="mt-7 pl-[max(1rem,calc((100vw-1380px)/2+clamp(1rem,3.5vw,2.75rem)))]">
-        <div
-          ref={scrollerRef}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pr-6 md:pr-10 snap-x snap-mandatory scrollbar-thin"
-          tabIndex={0}
-          role="region"
-          aria-label={`${title} product carousel`}
-        >
-          {products.map((product, index) => (
-            <div
-              key={product.id}
-              className="w-[62vw] xs:w-[52vw] sm:w-[38vw] md:w-[260px] lg:w-[280px] shrink-0 snap-start"
-            >
-              <ProductCard product={product} priority={index < 2} />
-            </div>
-          ))}
+        {/* Product track: perfectly container-bounded, 4 items on desktop, 3 on tablet, 2 on mobile */}
+        <div className="mt-7">
+          <div
+            ref={scrollerRef}
+            className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none scroll-smooth"
+            tabIndex={0}
+            role="region"
+            aria-label={`${title} product carousel`}
+          >
+            {products.map((product, index) => (
+              <div
+                key={product.id}
+                className="w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.67rem)] lg:w-[calc(25%-0.95rem)] shrink-0 snap-start"
+              >
+                <ProductCard product={product} priority={index < 4} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

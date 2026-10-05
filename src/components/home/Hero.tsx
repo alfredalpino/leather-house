@@ -47,28 +47,22 @@ const slides: HeroSlide[] = [
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
-  // Automatically cycle through background scenes every 5.5s (pauses on hover)
+  // Automatically cycle through background scenes every 5.5s
   useEffect(() => {
-    if (isPaused) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5500);
 
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, []);
 
   const slide = slides[currentSlide];
 
   return (
     <section
-      className="relative min-h-[74svh] md:min-h-[82svh] max-h-[920px] flex items-end overflow-hidden bg-ink select-none"
-      aria-label="Editorial Showcase"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocus={() => setIsPaused(true)}
-      onBlur={() => setIsPaused(false)}
+      className="relative min-h-[72svh] md:min-h-[82svh] flex items-end overflow-hidden bg-ink select-none"
+      aria-label="Hero Exhibition"
     >
       {/* Background Image Carousel with smooth cross-fade */}
       <div className="absolute inset-0 z-0">
@@ -98,13 +92,13 @@ export function Hero() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, rgba(20,19,18,0.32) 0%, rgba(20,19,18,0.18) 35%, rgba(20,19,18,0.72) 75%, rgba(20,19,18,0.92) 100%)",
+              "linear-gradient(180deg, rgba(20,19,18,0.35) 0%, rgba(20,19,18,0.2) 40%, rgba(20,19,18,0.85) 100%)",
           }}
         />
       </div>
 
       {/* Main Content Area */}
-      <div className="relative z-10 container-catalogue w-full pb-12 pt-28 md:pb-18">
+      <div className="relative z-10 container-catalogue w-full pb-12 pt-28 md:pb-16">
         <div className="max-w-2xl space-y-4">
           <AnimatePresence mode="wait">
             <motion.div
@@ -115,7 +109,7 @@ export function Hero() {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-3"
             >
-              <h1 className="font-display text-warm-white text-[clamp(2.5rem,7.5vw,4.85rem)] leading-[0.94] tracking-[-0.015em]">
+              <h1 className="font-display text-warm-white text-[clamp(2.6rem,8vw,4.8rem)] leading-[0.94] tracking-[-0.01em]">
                 {slide.title}
                 {slide.italicTitle && (
                   <span className="block italic font-normal text-warm-white/95 mt-1 font-serif">
@@ -134,7 +128,7 @@ export function Hero() {
           <div className="pt-4 flex flex-col items-start gap-2.5 max-w-xs">
             <Link
               href="/journal"
-              className="w-full inline-flex items-center justify-center gap-2 min-h-[48px] px-6 text-xs font-semibold tracking-[0.14em] uppercase bg-warm-white text-ink hover:bg-paper transition-colors duration-200"
+              className="w-full inline-flex items-center justify-center gap-2 h-11 px-6 text-xs font-semibold tracking-[0.14em] uppercase bg-warm-white text-ink hover:bg-paper transition-colors duration-200"
             >
               Discover Other Insights
               <ArrowRight size={13} />
@@ -142,23 +136,21 @@ export function Hero() {
 
             <Link
               href="/shop"
-              className="w-full inline-flex items-center justify-center gap-2 min-h-[48px] px-6 text-xs font-semibold tracking-[0.14em] uppercase text-warm-white border border-warm-white/70 hover:bg-warm-white hover:text-ink transition-colors duration-200"
+              className="w-full inline-flex items-center justify-center gap-2 h-11 px-6 text-xs font-semibold tracking-[0.14em] uppercase text-warm-white border border-warm-white/70 hover:bg-warm-white hover:text-ink transition-colors duration-200"
             >
               Shop the Catalogue
             </Link>
           </div>
 
           {/* Minimalist discreet slide position indicators */}
-          <div className="pt-4 flex items-center gap-2" role="tablist" aria-label="Slide indicators">
+          <div className="pt-4 flex items-center gap-2">
             {slides.map((s, idx) => (
               <button
                 key={s.id}
                 type="button"
                 onClick={() => setCurrentSlide(idx)}
                 className="py-1 px-0.5 group focus:outline-none"
-                aria-label={`Go to slide ${idx + 1}: ${s.title}`}
-                role="tab"
-                aria-selected={idx === currentSlide}
+                aria-label={`Go to slide ${idx + 1}`}
               >
                 <span
                   className={`block h-0.5 transition-all duration-300 ${
