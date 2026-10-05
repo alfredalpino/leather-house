@@ -77,12 +77,29 @@ export const primaryNav: NavItem[] = [
     label: "Fragrance",
     href: "/shop/fragrance",
     links: [
-      { label: "Perfumes", href: "/shop/fragrance?sub=perfumes" },
-      { label: "Attar", href: "/shop/fragrance?sub=attar" },
-      { label: "All fragrance", href: "/shop/fragrance" },
+      {
+        label: "Royal Attar & Itr",
+        href: "/shop/fragrance?sub=attar",
+        description: "Copper deg distillations: Shamama, Ruh Gulab & Mitti",
+      },
+      {
+        label: "Oud & Dehn Al-Oud",
+        href: "/shop/fragrance?sub=oud",
+        description: "Aged Assam Agarwood & velvety Safed White Oud",
+      },
+      {
+        label: "Artisanal Perfumes",
+        href: "/shop/fragrance?sub=perfumes",
+        description: "Eau de parfum with dry cedar, saffron & ambergris",
+      },
+      {
+        label: "All Fragrances",
+        href: "/shop/fragrance",
+        description: "Explore the complete royal olfactory cellar",
+      },
     ],
-    image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=900&q=80",
-    imageAlt: "Fragrance bottle",
+    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=900&q=80",
+    imageAlt: "Royal amber fragrance flacon",
   },
   {
     label: "Stories",

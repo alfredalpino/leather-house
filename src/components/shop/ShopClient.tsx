@@ -66,15 +66,17 @@ function ShopInner({
     <div>
       <div className="container-catalogue py-8 md:py-12">
         <p className="text-[11px] tracking-[0.2em] uppercase text-muted">
-          Catalogue
+          The Shop
         </p>
         <h1 className="mt-2 font-display text-[clamp(1.85rem,4vw,2.75rem)]">
-          {title}
+          {category === "fragrance" ? "Royal Fragrance & Itr" : title}
         </h1>
         <p className="mt-3 max-w-xl text-sm md:text-base text-muted">
-          {category
+          {category === "fragrance"
+            ? "Authentic Awadhi & Persian attars, aged Assam agarwood ouds, and signature distillations matured in traditional copper degs."
+            : category
             ? `${categoryLabels[category]} selected for material quality and lasting wear.`
-            : "Leather, footwear, accessories and fragrance from the house."}
+            : "Leather, footwear, accessories and royal fragrances from the house."}
         </p>
 
         <div className="mt-8 lg:hidden">

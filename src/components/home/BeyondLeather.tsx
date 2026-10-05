@@ -13,7 +13,7 @@ const edits = [
     image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1000&q=80",
   },
   {
-    title: "Fragrance & attar",
+    title: "Royal Fragrance & Itr",
     href: "/shop/fragrance",
     image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1000&q=80",
   },

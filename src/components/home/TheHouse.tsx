@@ -21,10 +21,10 @@ const pillars = [
     copy: "Ties, pins and hardware for how you present yourself.",
   },
   {
-    title: "Fragrance",
+    title: "Royal Fragrance",
     href: "/shop/fragrance",
-    image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1000&q=80",
-    copy: "Perfume and attar as the finishing material of style.",
+    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1000&q=80",
+    copy: "Aged Assamese oud, pure Awadhi attars, and copper-deg distillations.",
   },
 ];
 

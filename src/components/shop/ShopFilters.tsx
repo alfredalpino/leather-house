@@ -16,7 +16,7 @@ const subsByCategory: Record<ProductCategory, ProductSubcategory[]> = {
   leather: ["jackets", "belts", "wallets", "bags"],
   footwear: ["formal", "casual", "boots"],
   accessories: ["ties", "cufflinks", "tie-pins"],
-  fragrance: ["perfumes", "attar"],
+  fragrance: ["attar", "oud", "perfumes"],
 };
 
 type Props = {

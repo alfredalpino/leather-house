@@ -22,10 +22,10 @@ const categories = [
     image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1000&q=80",
   },
   {
-    title: "Attar & Scent",
-    subtitle: "Copper Deg Distillations",
+    title: "Royal Fragrance",
+    subtitle: "Pure Attar & Royal Oud",
     href: "/shop/fragrance",
-    image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1000&q=80",
   },
 ];
 
@@ -46,7 +46,7 @@ export function CategoryGrid() {
             href="/shop"
             className="hidden sm:inline-flex items-center gap-1 text-xs tracking-[0.14em] uppercase text-ink/80 hover:text-ink border-b border-ink/40 hover:border-ink pb-1 transition-colors"
           >
-            <span>View all catalogue</span>
+            <span>View complete shop</span>
             <ArrowUpRight size={13} />
           </Link>
         </div>
@@ -91,7 +91,7 @@ export function CategoryGrid() {
             href="/shop"
             className="inline-flex items-center gap-1.5 text-xs tracking-[0.14em] uppercase text-ink border-b border-ink pb-1 font-medium"
           >
-            <span>Explore complete catalogue</span>
+            <span>Explore complete shop</span>
             <ArrowUpRight size={13} />
           </Link>
         </div>

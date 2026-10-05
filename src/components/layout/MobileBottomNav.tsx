@@ -2,8 +2,43 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Grid, Sparkles, User } from "lucide-react";
+import { Home, ShoppingBag, User } from "lucide-react";
 import { motion } from "motion/react";
+
+function PerfumeBottleIcon({
+  size = 19,
+  strokeWidth = 1.6,
+  className = "",
+}: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* Crystal stopper / atomizer cap */}
+      <rect x="9.5" y="2" width="5" height="3.5" rx="0.75" />
+      {/* Collar & neck */}
+      <path d="M10.5 5.5v2h3v-2" />
+      <line x1="8" y1="7.5" x2="16" y2="7.5" />
+      {/* Flacon body with sculpted shoulders */}
+      <path d="M6 11.5c0-1.8 1.4-3 3-3h6c1.6 0 3 1.2 3 3V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V11.5z" />
+      {/* Central luxury label cartouche */}
+      <rect x="9" y="12" width="6" height="4.5" rx="0.5" strokeWidth={Math.max(1, strokeWidth - 0.4)} />
+    </svg>
+  );
+}
 
 export function MobileBottomNav() {
   const pathname = usePathname();
@@ -40,17 +75,18 @@ export function MobileBottomNav() {
           )}
         </Link>
 
-        {/* Catalogue */}
+        {/* Shop */}
         <Link
           href="/shop"
           className={`relative flex flex-col items-center justify-center w-full h-full py-1 text-center transition-colors ${
             isShop ? "text-ink" : "text-muted hover:text-ink"
           }`}
           aria-current={isShop ? "page" : undefined}
+          aria-label="Shop Catalogue"
         >
-          <Grid size={19} strokeWidth={isShop ? 2.2 : 1.6} />
+          <ShoppingBag size={19} strokeWidth={isShop ? 2.2 : 1.6} />
           <span className="text-[10px] font-medium tracking-[0.06em] mt-1">
-            Catalogue
+            Shop
           </span>
           {isShop && (
             <motion.span
@@ -61,20 +97,21 @@ export function MobileBottomNav() {
           )}
         </Link>
 
-        {/* Attar & Scent - Prominently featured */}
+        {/* Fragrance - Royal Itr & Oud Collection */}
         <Link
           href="/shop/fragrance"
           className={`relative flex flex-col items-center justify-center w-full h-full py-1 text-center transition-colors ${
             isFragrance ? "text-tobacco font-semibold" : "text-muted hover:text-tobacco"
           }`}
           aria-current={isFragrance ? "page" : undefined}
+          aria-label="Royal Fragrance & Itr Collection"
         >
           <div className="relative">
-            <Sparkles size={19} strokeWidth={isFragrance ? 2.2 : 1.6} />
+            <PerfumeBottleIcon size={19} strokeWidth={isFragrance ? 2.2 : 1.6} />
             <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-brass animate-pulse" />
           </div>
-          <span className="text-[10px] tracking-[0.04em] mt-1">
-            Attar & Scent
+          <span className="text-[10px] font-medium tracking-[0.05em] mt-1">
+            Fragrance
           </span>
           {isFragrance && (
             <motion.span

@@ -277,8 +277,23 @@ export function Header() {
                       <span>{item.label}</span>
                       {isFragrance && (
                         <span className="inline-flex items-center gap-1 text-[10px] font-sans font-semibold tracking-[0.1em] uppercase px-2 py-0.5 rounded-full bg-tobacco text-warm-white">
-                          <Sparkles size={10} />
-                          Attar & Scent
+                          <svg
+                            width="11"
+                            height="11"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <rect x="9.5" y="2" width="5" height="3.5" rx="0.75" />
+                            <path d="M10.5 5.5v2h3v-2" />
+                            <line x1="8" y1="7.5" x2="16" y2="7.5" />
+                            <path d="M6 11.5c0-1.8 1.4-3 3-3h6c1.6 0 3 1.2 3 3V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V11.5z" />
+                          </svg>
+                          Royal Itr & Oud
                         </span>
                       )}
                     </Link>

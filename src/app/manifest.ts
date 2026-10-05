@@ -38,16 +38,16 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Catalogue",
-        short_name: "Catalogue",
+        name: "Shop Catalogue",
+        short_name: "Shop",
         url: "/shop",
         description: "Browse footwear, jackets, belts and bags",
       },
       {
-        name: "Attar & Fragrance",
+        name: "Royal Fragrance & Itr",
         short_name: "Fragrance",
         url: "/shop/fragrance",
-        description: "Artisanal attar, oudh and extraits",
+        description: "Artisanal Awadhi attar, aged oud and royal essences",
       },
       {
         name: "Patron Profile",
