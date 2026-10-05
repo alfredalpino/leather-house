@@ -3,7 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import {
+  ChevronDown,
+  MapPin,
+  Menu,
+  MessageSquare,
+  Search,
+  ShoppingBag,
+  Sparkles,
+  User,
+  X,
+} from "lucide-react";
 import { primaryNav } from "@/lib/data/nav";
 import { useCart } from "@/lib/cart-context";
 import { useUi } from "@/lib/ui-context";
@@ -27,6 +37,8 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileNavOpen]);
+
+  const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>("Leather");
 
   return (
     <>
@@ -181,73 +193,195 @@ export function Header() {
         </div>
       </header>
 
+      {/* Fullscreen Mobile Navigation Menu - 100% Screen Width & Height */}
       <div
-        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-[320ms] ${
-          mobileNavOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-[70] lg:hidden bg-warm-white flex flex-col transition-all duration-[300ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          mobileNavOpen
+            ? "opacity-100 pointer-events-auto translate-x-0"
+            : "opacity-0 pointer-events-none -translate-x-full"
         }`}
+        aria-label="Mobile Navigation Menu"
       >
-        <button
-          type="button"
-          className="absolute inset-0 bg-ink/35"
-          aria-label="Close menu overlay"
-          onClick={closeMobileNav}
-        />
+        {/* Fullscreen Top Bar */}
+        <div className="flex items-center justify-between h-16 px-4 border-b border-line bg-warm-white shrink-0">
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center text-ink rounded-full hover:bg-bone transition-colors"
+            aria-label="Close menu"
+            onClick={closeMobileNav}
+          >
+            <X size={22} strokeWidth={1.75} />
+          </button>
+
+          <Link
+            href="/"
+            className="font-display text-xl text-ink font-medium tracking-tight"
+            onClick={closeMobileNav}
+          >
+            Leather House
+          </Link>
+
+          <div className="flex items-center">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center text-ink hover:text-accent transition-colors"
+              aria-label="Search"
+              onClick={() => {
+                closeMobileNav();
+                openSearch();
+              }}
+            >
+              <Search size={19} strokeWidth={1.75} />
+            </button>
+            <button
+              type="button"
+              className="relative inline-flex h-10 w-10 items-center justify-center text-ink hover:text-accent transition-colors"
+              aria-label={`Bag, ${itemCount} items`}
+              onClick={() => {
+                closeMobileNav();
+                openCart();
+              }}
+            >
+              <ShoppingBag size={19} strokeWidth={1.75} />
+              {itemCount > 0 && (
+                <span className="absolute right-1 top-1 min-w-[16px] h-4 px-1 rounded-[1px] bg-ink text-warm-white text-[10px] font-medium leading-4 text-center">
+                  {itemCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Fullscreen Content */}
         <nav
-          className={`absolute left-0 top-0 h-full w-[min(100%,340px)] bg-warm-white pt-[calc(var(--announce-h)+4.5rem)] px-6 pb-10 overflow-y-auto transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            mobileNavOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-          aria-label="Mobile"
+          className="flex-1 overflow-y-auto px-5 py-6 pb-28 space-y-6"
+          aria-label="Mobile Fullscreen Navigation"
         >
-          <ul className="space-y-5">
-            {primaryNav.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="font-display text-[1.75rem] text-ink tracking-wide"
-                  onClick={closeMobileNav}
-                >
-                  {item.label}
-                </Link>
-                {item.links && (
-                  <ul className="mt-2.5 space-y-2 border-l border-line pl-4">
-                    {item.links.map((link) => (
-                      <li key={link.href}>
+          {/* Primary Navigation Accordion */}
+          <div className="divide-y divide-line/70">
+            {primaryNav.map((item) => {
+              const isExpanded = expandedMobileCategory === item.label;
+              const hasLinks = item.links && item.links.length > 0;
+              const isFragrance = item.label.toLowerCase() === "fragrance";
+
+              return (
+                <div key={item.label} className="py-3.5">
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={item.href}
+                      className="font-display text-[1.85rem] text-ink hover:text-accent transition-colors tracking-tight flex items-center gap-2"
+                      onClick={closeMobileNav}
+                    >
+                      <span>{item.label}</span>
+                      {isFragrance && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-sans font-semibold tracking-[0.1em] uppercase px-2 py-0.5 rounded-full bg-tobacco text-warm-white">
+                          <Sparkles size={10} />
+                          Attar & Scent
+                        </span>
+                      )}
+                    </Link>
+
+                    {hasLinks && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedMobileCategory(isExpanded ? null : item.label)
+                        }
+                        className="p-2 text-muted hover:text-ink transition-colors"
+                        aria-label={`Toggle ${item.label} subcategories`}
+                      >
+                        <ChevronDown
+                          size={18}
+                          className={`transition-transform duration-200 ${
+                            isExpanded ? "rotate-180 text-ink" : ""
+                          }`}
+                        />
+                      </button>
+                    )}
+                  </div>
+
+                  {hasLinks && isExpanded && (
+                    <div className="mt-3 pl-3 border-l-2 border-tobacco/50 space-y-2.5">
+                      {item.links?.map((link) => (
                         <Link
+                          key={link.href}
                           href={link.href}
-                          className="text-sm text-muted hover:text-ink transition-colors"
+                          className="block text-sm text-ink/80 hover:text-ink font-medium transition-colors"
                           onClick={closeMobileNav}
                         >
                           {link.label}
+                          {link.description && (
+                            <span className="block text-xs text-muted font-normal mt-0.5">
+                              {link.description}
+                            </span>
+                          )}
                         </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10 pt-6 border-t border-line space-y-3">
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Quick Shortcuts */}
+          <div className="grid grid-cols-2 gap-3 pt-2">
             <Link
               href="/account"
-              className="block text-xs font-medium tracking-[0.12em] uppercase text-ink"
+              className="flex items-center gap-2.5 p-3.5 bg-paper border border-line hover:border-ink transition-colors text-ink rounded-sm"
               onClick={closeMobileNav}
             >
-              Patron Profile & Orders
+              <User size={16} className="text-tobacco" />
+              <div>
+                <p className="text-xs font-semibold tracking-wide uppercase">Patron Profile</p>
+                <p className="text-[11px] text-muted">Orders & Dispatches</p>
+              </div>
             </Link>
+
             <Link
               href="/store"
-              className="block text-xs font-medium tracking-[0.12em] uppercase text-muted hover:text-ink transition-colors"
+              className="flex items-center gap-2.5 p-3.5 bg-paper border border-line hover:border-ink transition-colors text-ink rounded-sm"
               onClick={closeMobileNav}
             >
-              Visit store
+              <MapPin size={16} className="text-tobacco" />
+              <div>
+                <p className="text-xs font-semibold tracking-wide uppercase">Aminabad Store</p>
+                <p className="text-[11px] text-muted">Directions & Hours</p>
+              </div>
             </Link>
-            <Link
-              href="/corporate"
-              className="block text-xs font-medium tracking-[0.12em] uppercase text-muted hover:text-ink transition-colors"
-              onClick={closeMobileNav}
+          </div>
+
+          {/* Bespoke Artisan WhatsApp Card */}
+          <div className="border border-line bg-paper/70 p-4 space-y-2 rounded-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-tobacco font-semibold">
+                Bespoke Atelier Service
+              </span>
+              <span className="text-[10px] text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-full font-medium">
+                Artisan Online
+              </span>
+            </div>
+            <p className="text-xs text-muted leading-relaxed">
+              Inquire about custom leather fitting, monogramming, or bespoke attar formulation directly from our Aminabad workshop.
+            </p>
+            <a
+              href="https://wa.me/919839012345?text=Hello%20Leather%20House,%20I%20would%20like%20to%20consult%20an%20artisan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.08em] uppercase text-ink hover:text-tobacco pt-1"
             >
-              Corporate & bulk
-            </Link>
+              <MessageSquare size={14} />
+              Chat with Master Craftsman
+            </a>
+          </div>
+
+          {/* Aminabad Lucknow Footer */}
+          <div className="pt-4 border-t border-line text-left space-y-1 text-xs text-muted">
+            <p className="font-semibold text-ink uppercase tracking-wider text-[11px]">
+              The House in Aminabad
+            </p>
+            <p>Aminabad, Lucknow, Uttar Pradesh · Mon–Sat 11:00 AM – 9:30 PM</p>
+            <p className="text-tobacco font-medium">Ph: +91 98390 12345 · Lifetime Care Guarantee</p>
           </div>
         </nav>
       </div>
