@@ -47,64 +47,66 @@ export function Header() {
           compact ? "h-14" : "h-16"
         }`}
       >
-        <div className="flex h-full items-center gap-1 px-3 md:px-8 lg:px-[max(2rem,calc((100vw-1280px)/2+2rem))]">
-          <button
-            type="button"
-            className="lg:hidden inline-flex h-10 w-10 shrink-0 items-center justify-center text-ink"
-            aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileNavOpen}
-            onClick={toggleMobileNav}
-          >
-            {mobileNavOpen ? (
-              <X size={20} strokeWidth={1.75} />
-            ) : (
-              <Menu size={20} strokeWidth={1.75} />
-            )}
-          </button>
+        <div className="container-catalogue flex h-full items-center justify-between gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button
+              type="button"
+              className="lg:hidden inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink rounded-sm hover:bg-paper transition-colors"
+              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileNavOpen}
+              onClick={toggleMobileNav}
+            >
+              {mobileNavOpen ? (
+                <X size={20} strokeWidth={1.75} />
+              ) : (
+                <Menu size={20} strokeWidth={1.75} />
+              )}
+            </button>
 
-          <Link
-            href="/"
-            className="shrink-0 font-display text-[1.15rem] leading-none tracking-[0.01em] text-ink sm:text-[1.35rem] lg:text-[1.75rem]"
-            onClick={closeMobileNav}
-          >
-            Leather House
-          </Link>
+            <Link
+              href="/"
+              className="shrink-0 font-display text-[1.2rem] leading-none tracking-[0.01em] text-ink sm:text-[1.4rem] lg:text-[1.75rem]"
+              onClick={closeMobileNav}
+            >
+              Leather House
+            </Link>
+          </div>
 
           <nav
-            className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-0.5"
+            className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1"
             aria-label="Primary"
           >
-              {primaryNav.map((item) => {
-                const isOpen = activeMega === item.label;
-                return (
-                  <div
-                    key={item.label}
-                    className="relative"
-                    onMouseEnter={() => setActiveMega(item.label)}
-                    onMouseLeave={() => setActiveMega(null)}
+            {primaryNav.map((item) => {
+              const isOpen = activeMega === item.label;
+              return (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => setActiveMega(item.label)}
+                  onMouseLeave={() => setActiveMega(null)}
+                >
+                  <Link
+                    href={item.href}
+                    className={`inline-flex h-11 items-center px-3 text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
+                      isOpen ? "text-ink" : "text-ink/85 hover:text-ink"
+                    }`}
+                    onFocus={() => setActiveMega(item.label)}
+                    aria-expanded={item.links ? isOpen : undefined}
                   >
-                    <Link
-                      href={item.href}
-                      className={`inline-flex h-11 items-center px-3 text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
-                        isOpen ? "text-ink" : "text-ink/85 hover:text-ink"
+                    <span
+                      className={`border-b pb-0.5 transition-[border-color] duration-200 ${
+                        isOpen ? "border-ink" : "border-transparent"
                       }`}
-                      onFocus={() => setActiveMega(item.label)}
-                      aria-expanded={item.links ? isOpen : undefined}
                     >
-                      <span
-                        className={`border-b pb-0.5 transition-[border-color] duration-200 ${
-                          isOpen ? "border-ink" : "border-transparent"
-                        }`}
-                      >
-                        {item.label}
-                      </span>
-                    </Link>
-                  </div>
-                );
-              })}
-            </nav>
+                      {item.label}
+                    </span>
+                  </Link>
+                </div>
+              );
+            })}
+          </nav>
 
-          <div className="ml-auto flex shrink-0 items-center">
+          <div className="flex shrink-0 items-center gap-0.5">
             <button
               type="button"
               className="inline-flex h-11 w-11 items-center justify-center text-ink hover:text-accent transition-colors"
